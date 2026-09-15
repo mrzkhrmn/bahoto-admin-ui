@@ -1,0 +1,35 @@
+.global-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: rgba(15, 28, 36, 0.45);
+}
+
+.global-loading__panel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.35rem;
+  border-radius: 0.65rem;
+  background: #fff;
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.global-loading__spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2.5px solid var(--accent-soft);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: global-spin 0.7s linear infinite;
+}
+
+@keyframes global-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

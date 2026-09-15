@@ -1,0 +1,42 @@
+.yaglama-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.yaglama-page__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.yaglama-page__header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.yaglama-page__header p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.yaglama-page__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.9rem;
+}
+
+.yaglama-page__error {
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 0.9rem;
+}
