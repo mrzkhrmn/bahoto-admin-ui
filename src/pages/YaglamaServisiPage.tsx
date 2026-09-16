@@ -18,17 +18,24 @@ import type {
 import './YaglamaServisiPage.css'
 
 const PAGE_SIZE = 10
+const DATE_FILTER_PAGE_SIZE = 1000
 
 export function YaglamaServisiPage() {
   const dispatch = useAppDispatch()
   const [page, setPage] = useState(1)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
   const [formOpen, setFormOpen] = useState(false)
   const [formMode, setFormMode] = useState<'create' | 'edit'>('create')
   const [editingRow, setEditingRow] = useState<OilChange | null>(null)
 
+  const dateFilterActive = Boolean(startDate || endDate)
+  const listPage = dateFilterActive ? 1 : page
+  const listPageSize = dateFilterActive ? DATE_FILTER_PAGE_SIZE : PAGE_SIZE
+
   const { data, isFetching, isError, error } = useGetOilChangeListQuery({
-    page,
-    pageSize: PAGE_SIZE,
+    page: listPage,
+    pageSize: listPageSize,
   })
   const [createOilChange, { isLoading: isCreating }] =
     useCreateOilChangeMutation()
@@ -43,6 +50,22 @@ export function YaglamaServisiPage() {
       dispatch(setGlobalLoading(false))
     }
   }, [dispatch, isFetching, isCreating, isUpdating, isDeleting])
+
+  const clearDateFilter = () => {
+    setStartDate('')
+    setEndDate('')
+    setPage(1)
+  }
+
+  const handleStartDateChange = (date: string) => {
+    setStartDate(date)
+    if (endDate && date && date > endDate) setEndDate(date)
+  }
+
+  const handleEndDateChange = (date: string) => {
+    setEndDate(date)
+    if (startDate && date && date < startDate) setStartDate(date)
+  }
 
   const openCreate = () => {
     setFormMode('create')
@@ -64,7 +87,7 @@ export function YaglamaServisiPage() {
 
     try {
       await deleteOilChange({ id: row.id }).unwrap()
-      if ((data?.items.length ?? 0) <= 1 && page > 1) {
+      if ((data?.items.length ?? 0) <= 1 && page > 1 && !dateFilterActive) {
         setPage((p) => p - 1)
       }
     } catch (err) {
@@ -132,10 +155,15 @@ export function YaglamaServisiPage() {
         data={data?.items ?? []}
         totalCount={data?.totalCount ?? 0}
         page={data?.page ?? page}
-        pageSize={data?.pageSize ?? PAGE_SIZE}
+        pageSize={data?.pageSize ?? listPageSize}
         onPageChange={setPage}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={handleStartDateChange}
+        onEndDateChange={handleEndDateChange}
+        onClearDateFilter={clearDateFilter}
       />
 
       <OilChangeCreateForm

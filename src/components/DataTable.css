@@ -12,6 +12,15 @@
   flex-wrap: wrap;
 }
 
+.data-table__filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
 .data-table__search {
   display: flex;
   align-items: center;
@@ -31,6 +40,77 @@
   background: transparent;
   font: inherit;
   color: var(--text);
+}
+
+.data-table__date-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.data-table__date-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.65rem;
+  border: 2px solid var(--border);
+  border-radius: 0.5rem;
+  background: #fff;
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.data-table__date-filter span {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.data-table__date-filter input[type='date'] {
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.data-table__date-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: none;
+  border-radius: 0.35rem;
+  background: var(--row-hover);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.data-table__date-clear:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.data-table__range-summary {
+  padding: 0.85rem 1rem;
+  border: 2px solid #9cb8b8;
+  border-radius: 0.5rem;
+  background: #e8f2f2;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.data-table__range-summary p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.data-table__range-summary strong {
+  color: #0a4f4f;
 }
 
 .data-table__count {

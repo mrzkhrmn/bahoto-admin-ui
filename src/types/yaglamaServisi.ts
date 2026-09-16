@@ -33,7 +33,7 @@ export interface OilChangeCreateRequest {
   plate: string
   oilType: string
   kmChanged: number
-  nextChangeKm: null
+  nextChangeKm: number
   oilFilter: string
   airFilter: string
   fuelFilter: string

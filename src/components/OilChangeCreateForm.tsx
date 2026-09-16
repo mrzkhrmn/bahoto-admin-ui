@@ -129,6 +129,19 @@ export function OilChangeCreateForm({
       return
     }
 
+    const nextRaw = form.nextChangeKm.trim()
+    let nextChangeKm: number | null
+    if (nextRaw === '') {
+      nextChangeKm = mode === 'create' ? kmChanged + 10000 : null
+    } else {
+      const parsed = Number(nextRaw)
+      if (!Number.isFinite(parsed) || parsed < 0) {
+        setError('Geçerli bir gelecek km girin.')
+        return
+      }
+      nextChangeKm = parsed
+    }
+
     try {
       if (mode === 'create') {
         await onCreate({
@@ -136,7 +149,7 @@ export function OilChangeCreateForm({
           plate: form.plate.trim(),
           oilType: form.oilType.trim(),
           kmChanged,
-          nextChangeKm: null,
+          nextChangeKm: nextChangeKm as number,
           oilFilter: form.oilFilter.trim(),
           airFilter: form.airFilter.trim(),
           fuelFilter: form.fuelFilter.trim(),
@@ -149,16 +162,6 @@ export function OilChangeCreateForm({
         if (!initialData?.id) {
           setError('Güncellenecek kayıt bulunamadı.')
           return
-        }
-
-        const nextRaw = form.nextChangeKm.trim()
-        let nextChangeKm: number | null = null
-        if (nextRaw !== '') {
-          nextChangeKm = Number(nextRaw)
-          if (!Number.isFinite(nextChangeKm) || nextChangeKm < 0) {
-            setError('Geçerli bir gelecek km girin.')
-            return
-          }
         }
 
         await onUpdate({
@@ -254,18 +257,20 @@ export function OilChangeCreateForm({
                 required
               />
             </label>
-            {isEdit ? (
-              <label>
-                <span>Gelecek Km</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={form.nextChangeKm}
-                  onChange={(e) => update('nextChangeKm', e.target.value)}
-                  placeholder="Boş bırakılabilir"
-                />
-              </label>
-            ) : null}
+            <label>
+              <span>Gelecek Km</span>
+              <input
+                type="number"
+                min={0}
+                value={form.nextChangeKm}
+                onChange={(e) => update('nextChangeKm', e.target.value)}
+                placeholder={
+                  isEdit
+                    ? 'Boş bırakılabilir'
+                    : 'Boşsa değişim km + 10.000'
+                }
+              />
+            </label>
             <label>
               <span>Yağ Filtresi</span>
               <input
@@ -321,13 +326,6 @@ export function OilChangeCreateForm({
               />
             </label>
           </div>
-
-          {!isEdit ? (
-            <p className="create-modal__hint">
-              Gelecek Km oluştururken boş gönderilir; güncellemede
-              değiştirilebilir.
-            </p>
-          ) : null}
 
           <footer className="create-modal__actions">
             <button
