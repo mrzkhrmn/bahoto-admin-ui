@@ -16,6 +16,7 @@ type SortDir = 'asc' | 'desc'
 interface Column {
   key: SortKey
   label: string
+  cellClass?: string
   render?: (row: OilChange) => ReactNode
 }
 
@@ -33,28 +34,31 @@ const columns: Column[] = [
   {
     key: 'createdAt',
     label: 'Tarih',
+    cellClass: 'data-table__cell--date',
     render: (row) => formatDate(row.createdAt),
   },
-  { key: 'vehicle', label: 'Araç' },
-  { key: 'plate', label: 'Plaka' },
-  { key: 'oilType', label: 'Yağ Cinsi' },
+  { key: 'vehicle', label: 'Araç', cellClass: 'data-table__cell--vehicle' },
+  { key: 'plate', label: 'Plaka', cellClass: 'data-table__cell--plate' },
+  { key: 'oilType', label: 'Yağ Cinsi', cellClass: 'data-table__cell--oil' },
   {
     key: 'kmChanged',
     label: 'Değişim Km',
+    cellClass: 'data-table__cell--km',
     render: (row) => formatNumber(row.kmChanged),
   },
   {
     key: 'nextChangeKm',
     label: 'Gelecek Km',
+    cellClass: 'data-table__cell--km-next',
     render: (row) =>
       row.nextChangeKm == null ? '—' : formatNumber(row.nextChangeKm),
   },
-  { key: 'oilFilter', label: 'Yağ Filtresi' },
-  { key: 'airFilter', label: 'Hava Filtresi' },
-  { key: 'fuelFilter', label: 'Yakıt Filtresi' },
-  { key: 'polenFilter', label: 'Polen Filtresi' },
-  { key: 'note', label: 'Not' },
-  { key: 'employee', label: 'Yapan Usta' },
+  { key: 'oilFilter', label: 'Yağ Filtresi', cellClass: 'data-table__cell--filter' },
+  { key: 'airFilter', label: 'Hava Filtresi', cellClass: 'data-table__cell--filter' },
+  { key: 'fuelFilter', label: 'Yakıt Filtresi', cellClass: 'data-table__cell--filter' },
+  { key: 'polenFilter', label: 'Polen Filtresi', cellClass: 'data-table__cell--filter' },
+  { key: 'note', label: 'Not', cellClass: 'data-table__cell--note' },
+  { key: 'employee', label: 'Yapan Usta', cellClass: 'data-table__cell--employee' },
 ]
 
 function formatDate(value: string): string {
@@ -188,7 +192,7 @@ export function DataTable({
               sorted.map((row) => (
                 <tr key={row.id}>
                   {columns.map((col) => (
-                    <td key={col.key}>
+                    <td key={col.key} className={col.cellClass}>
                       {col.render ? col.render(row) : formatCell(row[col.key])}
                     </td>
                   ))}

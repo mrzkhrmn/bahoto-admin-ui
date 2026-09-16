@@ -18,7 +18,7 @@
   gap: 0.5rem;
   min-width: min(100%, 280px);
   padding: 0.55rem 0.85rem;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: 0.5rem;
   background: #fff;
   color: var(--muted);
@@ -34,13 +34,14 @@
 }
 
 .data-table__count {
-  font-size: 0.875rem;
-  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
 }
 
 .data-table__scroll {
   overflow-x: auto;
-  border: 1px solid var(--border);
+  border: 2px solid #c5d0d8;
   border-radius: 0.65rem;
   background: #fff;
 }
@@ -48,21 +49,29 @@
 .data-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
 }
 
 .data-table th,
 .data-table td {
-  padding: 0.75rem 0.85rem;
+  padding: 0.85rem 0.95rem;
   text-align: left;
   white-space: nowrap;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid #d4dde4;
+  border-right: 2px solid #e8eef2;
+}
+
+.data-table th:last-child,
+.data-table td:last-child {
+  border-right: none;
 }
 
 .data-table th {
-  background: var(--table-head);
-  font-weight: 600;
-  color: var(--text);
+  background: #e8f2f2;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #0a4f4f;
+  border-bottom: 2px solid #9cb8b8;
 }
 
 .data-table tbody tr:last-child td {
@@ -73,6 +82,54 @@
   background: var(--row-hover);
 }
 
+.data-table tbody td {
+  font-weight: 700;
+}
+
+.data-table__cell--date {
+  font-size: 0.95rem;
+  color: #c0392b;
+  letter-spacing: 0.01em;
+}
+
+.data-table__cell--vehicle {
+  color: #1e3a5f;
+}
+
+.data-table__cell--plate {
+  font-size: 0.98rem;
+  color: #9a3412;
+  letter-spacing: 0.04em;
+}
+
+.data-table__cell--oil {
+  color: #0e7490;
+}
+
+.data-table__cell--km {
+  font-variant-numeric: tabular-nums;
+  color: #166534;
+}
+
+.data-table__cell--km-next {
+  font-variant-numeric: tabular-nums;
+  color: #b45309;
+}
+
+.data-table__cell--filter {
+  color: #334155;
+}
+
+.data-table__cell--note {
+  color: #475569;
+  max-width: 220px;
+  white-space: normal;
+}
+
+.data-table__cell--employee {
+  color: #7c2d12;
+}
+
 .data-table__sort {
   display: inline-flex;
   align-items: center;
@@ -80,7 +137,7 @@
   border: none;
   background: transparent;
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   color: inherit;
   cursor: pointer;
   padding: 0;
@@ -106,8 +163,9 @@
   align-items: center;
   justify-content: flex-end;
   gap: 0.75rem;
-  font-size: 0.875rem;
-  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
 .btn {
