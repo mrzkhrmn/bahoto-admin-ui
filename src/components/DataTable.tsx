@@ -59,6 +59,12 @@ const columns: Column[] = [
   { key: 'polenFilter', label: 'Polen Filtresi', cellClass: 'data-table__cell--filter' },
   { key: 'note', label: 'Not', cellClass: 'data-table__cell--note' },
   { key: 'employee', label: 'Yapan Usta', cellClass: 'data-table__cell--employee' },
+  {
+    key: 'price',
+    label: 'Fiyat/Tl',
+    cellClass: 'data-table__cell--price',
+    render: (row) => formatPrice(row.price),
+  },
 ]
 
 function formatDate(value: string): string {
@@ -69,6 +75,14 @@ function formatDate(value: string): string {
 
 function formatNumber(value: number): string {
   return value.toLocaleString('tr-TR')
+}
+
+function formatPrice(value: number | null): string {
+  if (value == null) return '—'
+  return value.toLocaleString('tr-TR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
 }
 
 function formatCell(value: OilChange[SortKey]): string {

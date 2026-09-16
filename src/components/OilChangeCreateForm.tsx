@@ -32,6 +32,7 @@ const emptyForm = {
   polenFilter: '',
   note: '',
   employee: '',
+  price: '',
 }
 
 function toFormState(data?: OilChange | null) {
@@ -49,7 +50,17 @@ function toFormState(data?: OilChange | null) {
     polenFilter: data.polenFilter ?? '',
     note: data.note ?? '',
     employee: data.employee ?? '',
+    price: data.price == null ? '' : String(data.price),
   }
+}
+
+function parseOptionalPrice(raw: string): number | null | 'invalid' {
+  const trimmed = raw.trim()
+  if (trimmed === '') return null
+  const normalized = trimmed.replace(',', '.')
+  const value = Number(normalized)
+  if (!Number.isFinite(value) || value < 0) return 'invalid'
+  return value
 }
 
 function getErrorMessage(err: unknown, fallback: string): string {
@@ -112,6 +123,12 @@ export function OilChangeCreateForm({
       return
     }
 
+    const price = parseOptionalPrice(form.price)
+    if (price === 'invalid') {
+      setError('Geçerli bir fiyat girin.')
+      return
+    }
+
     try {
       if (mode === 'create') {
         await onCreate({
@@ -126,6 +143,7 @@ export function OilChangeCreateForm({
           polenFilter: form.polenFilter.trim(),
           note: form.note.trim(),
           employee: form.employee.trim(),
+          price,
         })
       } else {
         if (!initialData?.id) {
@@ -156,6 +174,7 @@ export function OilChangeCreateForm({
           polenFilter: form.polenFilter.trim(),
           note: form.note.trim(),
           employee: form.employee.trim(),
+          price,
         })
       }
 
@@ -280,6 +299,17 @@ export function OilChangeCreateForm({
               <input
                 value={form.employee}
                 onChange={(e) => update('employee', e.target.value)}
+              />
+            </label>
+            <label>
+              <span>Fiyat / TL</span>
+              <input
+                type="number"
+                min={0}
+                step="0.01"
+                value={form.price}
+                onChange={(e) => update('price', e.target.value)}
+                placeholder="Boş bırakılabilir"
               />
             </label>
             <label className="create-modal__full">

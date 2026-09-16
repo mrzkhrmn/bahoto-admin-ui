@@ -130,6 +130,11 @@
   color: #7c2d12;
 }
 
+.data-table__cell--price {
+  font-variant-numeric: tabular-nums;
+  color: #0f766e;
+}
+
 .data-table__sort {
   display: inline-flex;
   align-items: center;

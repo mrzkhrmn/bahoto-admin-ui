@@ -11,6 +11,7 @@ export interface OilChange {
   polenFilter: string
   note: string
   employee: string
+  price: number | null
   createdAt: string
   updatedAt: string | null
 }
@@ -39,6 +40,7 @@ export interface OilChangeCreateRequest {
   polenFilter: string
   note: string
   employee: string
+  price: number | null
 }
 
 export interface OilChangeUpdateRequest {
@@ -54,6 +56,7 @@ export interface OilChangeUpdateRequest {
   polenFilter: string
   note: string
   employee: string
+  price: number | null
 }
 
 export interface OilChangeDeleteRequest {
