@@ -129,7 +129,7 @@
 .data-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .data-table th,
@@ -164,10 +164,11 @@
 
 .data-table tbody td {
   font-weight: 700;
+  font-size: 1.08rem;
 }
 
 .data-table__cell--date {
-  font-size: 0.95rem;
+  font-size: 1.08rem;
   color: #c0392b;
   letter-spacing: 0.01em;
 }
@@ -177,7 +178,7 @@
 }
 
 .data-table__cell--plate {
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   color: #9a3412;
   letter-spacing: 0.04em;
 }
@@ -194,10 +195,6 @@
 .data-table__cell--km-next {
   font-variant-numeric: tabular-nums;
   color: #b45309;
-}
-
-.data-table__cell--filter {
-  color: #334155;
 }
 
 .data-table__cell--phone {
@@ -246,7 +243,16 @@
 
 .data-table__actions {
   display: flex;
-  gap: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.data-table__actions .btn {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  font-size: 0.95rem;
 }
 
 .data-table__pagination {
@@ -262,15 +268,16 @@
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
   padding: 0.4rem 0.7rem;
   border-radius: 0.4rem;
   border: 1px solid transparent;
   font: inherit;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .btn:disabled {
@@ -288,13 +295,34 @@
   background: var(--row-hover);
 }
 
+.btn--detail {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  color: #1d4ed8;
+}
+
+.btn--detail:hover:not(:disabled) {
+  background: #bfdbfe;
+}
+
+.btn--edit {
+  background: #fef3c7;
+  border-color: #fcd34d;
+  color: #b45309;
+}
+
+.btn--edit:hover:not(:disabled) {
+  background: #fde68a;
+}
+
 .btn--danger {
-  background: var(--danger-soft);
-  color: var(--danger);
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
 }
 
 .btn--danger:hover:not(:disabled) {
-  background: #fcdada;
+  background: #fecaca;
 }
 
 .btn--primary {

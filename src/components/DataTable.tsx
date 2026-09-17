@@ -4,11 +4,13 @@ import {
   FiChevronDown,
   FiChevronUp,
   FiEdit2,
+  FiEye,
   FiSearch,
   FiTrash2,
   FiX,
 } from 'react-icons/fi'
 import type { OilChange } from '../types/yaglamaServisi'
+import { OilChangeDetailModal } from './OilChangeDetailModal'
 import './DataTable.css'
 
 type SortKey = keyof OilChange
@@ -45,7 +47,6 @@ const columns: Column[] = [
   },
   { key: 'vehicle', label: 'Araç', cellClass: 'data-table__cell--vehicle' },
   { key: 'plate', label: 'Plaka', cellClass: 'data-table__cell--plate' },
-  { key: 'phone', label: 'Telefon', cellClass: 'data-table__cell--phone', render: (row) => row.phone?.trim() || '—' },
   { key: 'oilType', label: 'Yağ Cinsi', cellClass: 'data-table__cell--oil' },
   {
     key: 'kmChanged',
@@ -60,18 +61,32 @@ const columns: Column[] = [
     render: (row) =>
       row.nextChangeKm == null ? '—' : formatNumber(row.nextChangeKm),
   },
-  { key: 'oilFilter', label: 'Yağ Filtresi', cellClass: 'data-table__cell--filter' },
-  { key: 'airFilter', label: 'Hava Filtresi', cellClass: 'data-table__cell--filter' },
-  { key: 'fuelFilter', label: 'Yakıt Filtresi', cellClass: 'data-table__cell--filter' },
-  { key: 'polenFilter', label: 'Polen Filtresi', cellClass: 'data-table__cell--filter' },
-  { key: 'note', label: 'Not', cellClass: 'data-table__cell--note' },
   { key: 'employee', label: 'Yapan Usta', cellClass: 'data-table__cell--employee' },
+  {
+    key: 'phone',
+    label: 'Telefon',
+    cellClass: 'data-table__cell--phone',
+    render: (row) => row.phone?.trim() || '—',
+  },
   {
     key: 'price',
     label: 'Fiyat/Tl',
     cellClass: 'data-table__cell--price',
     render: (row) => formatPrice(row.price),
   },
+]
+
+const searchFields: (keyof OilChange)[] = [
+  'vehicle',
+  'plate',
+  'phone',
+  'oilType',
+  'oilFilter',
+  'airFilter',
+  'fuelFilter',
+  'polenFilter',
+  'note',
+  'employee',
 ]
 
 function toLocalDateKey(value: string): string {
@@ -140,6 +155,7 @@ export function DataTable({
   const [search, setSearch] = useState('')
   const [sortKey, setSortKey] = useState<SortKey>('createdAt')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
+  const [detailRow, setDetailRow] = useState<OilChange | null>(null)
 
   const dateFilterActive = Boolean(startDate || endDate)
 
@@ -155,14 +171,9 @@ export function DataTable({
     if (!q) return dateFiltered
 
     return dateFiltered.filter((row) =>
-      columns.some((col) => {
-        const text = (
-          col.render
-            ? String(col.render(row) ?? '')
-            : formatCell(row[col.key])
-        ).toLocaleLowerCase('tr')
-        return text.includes(q)
-      }),
+      searchFields.some((key) =>
+        formatCell(row[key]).toLocaleLowerCase('tr').includes(q),
+      ),
     )
   }, [dateFiltered, search])
 
@@ -317,21 +328,30 @@ export function DataTable({
                     <div className="data-table__actions">
                       <button
                         type="button"
-                        className="btn btn--ghost"
+                        className="btn btn--detail"
+                        onClick={() => setDetailRow(row)}
+                        title="Detay"
+                        aria-label="Detay"
+                      >
+                        <FiEye aria-hidden />
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn--edit"
                         onClick={() => onEdit(row)}
-                        title="Güncelle"
+                        title="Düzenle"
+                        aria-label="Düzenle"
                       >
                         <FiEdit2 aria-hidden />
-                        Güncelle
                       </button>
                       <button
                         type="button"
                         className="btn btn--danger"
                         onClick={() => onDelete(row)}
                         title="Sil"
+                        aria-label="Sil"
                       >
                         <FiTrash2 aria-hidden />
-                        Sil
                       </button>
                     </div>
                   </td>
@@ -375,6 +395,11 @@ export function DataTable({
           </button>
         </div>
       ) : null}
+
+      <OilChangeDetailModal
+        row={detailRow}
+        onClose={() => setDetailRow(null)}
+      />
     </div>
   )
 }
