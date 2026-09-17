@@ -18,6 +18,7 @@ export function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   if (isAuthenticated) {
@@ -29,9 +30,9 @@ export function LoginPage() {
     setError(null);
 
     try {
-      const result = await login({ email, password }).unwrap();
+      const result = await login({ email, password, rememberMe }).unwrap();
 
-      if (!result.success || !result.data?.token) {
+      if (!result.success || !result.data?.token || !result.data.refreshToken) {
         setError(result.message || "Giriş başarısız.");
         return;
       }
@@ -39,11 +40,13 @@ export function LoginPage() {
       dispatch(
         setCredentials({
           token: result.data.token,
+          refreshToken: result.data.refreshToken,
           user: {
             userId: result.data.userId,
             email: result.data.email,
             fullName: result.data.fullName,
           },
+          rememberMe,
         }),
       );
       navigate("/yaglama-servisi", { replace: true });
@@ -112,6 +115,15 @@ export function LoginPage() {
                 required
               />
             </div>
+          </label>
+
+          <label className="login-page__remember">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <span>Beni hatırla</span>
           </label>
 
           <button

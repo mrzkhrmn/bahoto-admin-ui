@@ -1,6 +1,15 @@
 export interface LoginRequest {
   email: string
   password: string
+  rememberMe: boolean
+}
+
+export interface RefreshRequest {
+  refreshToken: string
+}
+
+export interface LogoutRequest {
+  refreshToken: string
 }
 
 export interface AuthUser {
@@ -9,12 +18,17 @@ export interface AuthUser {
   fullName: string
 }
 
-export interface LoginData extends AuthUser {
+export interface AuthData extends AuthUser {
   token: string
+  refreshToken: string
+  expiresIn: number
 }
 
-export interface LoginResponse {
+export interface AuthResponse {
   success: boolean
   message: string
-  data: LoginData
+  data: AuthData
 }
+
+export type LoginResponse = AuthResponse
+export type RefreshResponse = AuthResponse

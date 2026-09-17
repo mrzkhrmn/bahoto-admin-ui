@@ -6,9 +6,10 @@ import {
   FiDroplet,
   FiLogOut,
 } from 'react-icons/fi'
-import { useAppDispatch } from '../app/hooks'
-import { logout } from '../features/auth/authSlice'
+import { useLogoutMutation } from '../api/authApi'
 import { baseApi } from '../api/baseApi'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { logout, selectRefreshToken } from '../features/auth/authSlice'
 import './Sidebar.css'
 
 const STORAGE_KEY = 'bahoto-sidebar-collapsed'
@@ -24,9 +25,19 @@ function readCollapsed(): boolean {
 export function Sidebar() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const refreshToken = useAppSelector(selectRefreshToken)
+  const [logoutApi] = useLogoutMutation()
   const [collapsed, setCollapsed] = useState(readCollapsed)
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    if (refreshToken) {
+      try {
+        await logoutApi({ refreshToken }).unwrap()
+      } catch {
+        /* yerel çıkış yine yapılır */
+      }
+    }
+
     dispatch(logout())
     dispatch(baseApi.util.resetApiState())
     navigate('/login', { replace: true })
@@ -86,7 +97,7 @@ export function Sidebar() {
       <button
         type="button"
         className="sidebar__logout"
-        onClick={handleLogout}
+        onClick={() => void handleLogout()}
         title="Çıkış Yap"
       >
         <FiLogOut aria-hidden />

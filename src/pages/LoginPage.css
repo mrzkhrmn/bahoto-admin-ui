@@ -103,6 +103,24 @@
   color: var(--text);
 }
 
+.login-page__remember {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.login-page__remember input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
 .login-page__submit {
   margin-top: 0.35rem;
   padding: 0.8rem 1rem;
