@@ -138,7 +138,7 @@
   text-align: left;
   white-space: nowrap;
   border-bottom: 2px solid #d4dde4;
-  border-right: 2px solid #e8eef2;
+  border-right: 2px solid #8aa0ae;
 }
 
 .data-table th:last-child,
@@ -198,6 +198,12 @@
 
 .data-table__cell--filter {
   color: #334155;
+}
+
+.data-table__cell--phone {
+  font-variant-numeric: tabular-nums;
+  color: #1d4ed8;
+  letter-spacing: 0.02em;
 }
 
 .data-table__cell--note {

@@ -23,6 +23,7 @@ interface OilChangeFormProps {
 const emptyForm = {
   vehicle: '',
   plate: '',
+  phone: '',
   oilType: '',
   kmChanged: '',
   nextChangeKm: '',
@@ -40,6 +41,7 @@ function toFormState(data?: OilChange | null) {
   return {
     vehicle: data.vehicle ?? '',
     plate: data.plate ?? '',
+    phone: data.phone ?? '',
     oilType: data.oilType ?? '',
     kmChanged: String(data.kmChanged ?? ''),
     nextChangeKm:
@@ -147,6 +149,7 @@ export function OilChangeCreateForm({
         await onCreate({
           vehicle: form.vehicle.trim(),
           plate: form.plate.trim(),
+          phone: form.phone.trim(),
           oilType: form.oilType.trim(),
           kmChanged,
           nextChangeKm: nextChangeKm as number,
@@ -168,6 +171,7 @@ export function OilChangeCreateForm({
           id: initialData.id,
           vehicle: form.vehicle.trim(),
           plate: form.plate.trim(),
+          phone: form.phone.trim(),
           oilType: form.oilType.trim(),
           kmChanged,
           nextChangeKm,
@@ -237,6 +241,15 @@ export function OilChangeCreateForm({
                 value={form.plate}
                 onChange={(e) => update('plate', e.target.value)}
                 required
+              />
+            </label>
+            <label>
+              <span>Telefon</span>
+              <input
+                type="tel"
+                value={form.phone}
+                onChange={(e) => update('phone', e.target.value)}
+                placeholder="05xx xxx xx xx"
               />
             </label>
             <label>

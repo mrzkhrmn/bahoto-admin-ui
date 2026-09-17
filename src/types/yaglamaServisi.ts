@@ -2,6 +2,7 @@ export interface OilChange {
   id: string
   vehicle: string
   plate: string
+  phone: string
   oilType: string
   kmChanged: number
   nextChangeKm: number | null
@@ -31,6 +32,7 @@ export interface OilChangeListData {
 export interface OilChangeCreateRequest {
   vehicle: string
   plate: string
+  phone: string
   oilType: string
   kmChanged: number
   nextChangeKm: number
@@ -47,6 +49,7 @@ export interface OilChangeUpdateRequest {
   id: string
   vehicle: string
   plate: string
+  phone: string
   oilType: string
   kmChanged: number
   nextChangeKm: number | null

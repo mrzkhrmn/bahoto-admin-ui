@@ -45,6 +45,7 @@ const columns: Column[] = [
   },
   { key: 'vehicle', label: 'Araç', cellClass: 'data-table__cell--vehicle' },
   { key: 'plate', label: 'Plaka', cellClass: 'data-table__cell--plate' },
+  { key: 'phone', label: 'Telefon', cellClass: 'data-table__cell--phone', render: (row) => row.phone?.trim() || '—' },
   { key: 'oilType', label: 'Yağ Cinsi', cellClass: 'data-table__cell--oil' },
   {
     key: 'kmChanged',
@@ -276,7 +277,7 @@ export function DataTable({
               {columns.map((col) => {
                 const active = sortKey === col.key
                 return (
-                  <th key={col.key}>
+                  <th key={col.key} className={col.cellClass}>
                     <button
                       type="button"
                       className={`data-table__sort${active ? ' is-active' : ''}`}
