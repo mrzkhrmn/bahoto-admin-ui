@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { FiEdit2, FiPlus, FiX } from 'react-icons/fi'
 import type {
@@ -91,12 +91,25 @@ export function OilChangeCreateForm({
 }: OilChangeFormProps) {
   const [form, setForm] = useState(emptyForm)
   const [error, setError] = useState<string | null>(null)
+  const noteRef = useRef<HTMLTextAreaElement>(null)
+
+  const resizeNote = () => {
+    const el = noteRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = `${el.scrollHeight}px`
+  }
 
   useEffect(() => {
     if (!open) return
     setForm(toFormState(mode === 'edit' ? initialData : null))
     setError(null)
   }, [open, mode, initialData])
+
+  useEffect(() => {
+    if (!open) return
+    resizeNote()
+  }, [open, form.note])
 
   if (!open) return null
 
@@ -333,7 +346,9 @@ export function OilChangeCreateForm({
             <label className="create-modal__full">
               <span>Not</span>
               <textarea
-                rows={3}
+                ref={noteRef}
+                rows={1}
+                className="create-modal__note"
                 value={form.note}
                 onChange={(e) => update('note', e.target.value)}
               />
