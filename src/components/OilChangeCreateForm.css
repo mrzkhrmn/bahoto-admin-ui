@@ -108,6 +108,14 @@
   grid-column: 1 / -1;
 }
 
+.create-modal__note {
+  resize: none;
+  overflow: hidden;
+  min-height: 2.4rem;
+  line-height: 1.4;
+  field-sizing: content;
+}
+
 .create-modal__hint {
   margin: 0;
   font-size: 0.8rem;
