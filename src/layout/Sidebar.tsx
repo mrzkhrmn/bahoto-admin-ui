@@ -5,7 +5,6 @@ import {
   FiChevronRight,
   FiDroplet,
   FiLogOut,
-  FiPackage,
   FiFileText,
 } from 'react-icons/fi'
 import { useLogoutMutation } from '../api/authApi'
@@ -93,16 +92,6 @@ export function Sidebar() {
         >
           <FiDroplet aria-hidden />
           <span className="sidebar__link-label">Yağlama Servisi</span>
-        </NavLink>
-        <NavLink
-          to="/urunler"
-          className={({ isActive }) =>
-            `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
-          }
-          title="Ürünler"
-        >
-          <FiPackage aria-hidden />
-          <span className="sidebar__link-label">Ürünler</span>
         </NavLink>
         <NavLink
           to="/cari"

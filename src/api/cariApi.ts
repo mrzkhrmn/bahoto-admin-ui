@@ -3,9 +3,11 @@ import type {
   ApiResponse,
   Cari,
   CariCreateRequest,
+  CariCreateWithProductRequest,
   CariDeleteRequest,
   CariListData,
   CariListRequest,
+  CariProductGroup,
   CariUpdateRequest,
 } from '../types/cari'
 
@@ -27,6 +29,19 @@ export const cariApi = baseApi.injectEndpoints({
         body,
       }),
       transformResponse: (response: ApiResponse<Cari>) => response.data,
+      invalidatesTags: ['Cari'],
+    }),
+    createCariWithProduct: builder.mutation<
+      CariProductGroup,
+      CariCreateWithProductRequest
+    >({
+      query: (body) => ({
+        url: 'api/cari/create-with-product',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: ApiResponse<CariProductGroup>) =>
+        response.data,
       invalidatesTags: ['Cari'],
     }),
     updateCari: builder.mutation<Cari, CariUpdateRequest>({
@@ -52,6 +67,7 @@ export const cariApi = baseApi.injectEndpoints({
 export const {
   useGetCariListQuery,
   useCreateCariMutation,
+  useCreateCariWithProductMutation,
   useUpdateCariMutation,
   useDeleteCariMutation,
 } = cariApi

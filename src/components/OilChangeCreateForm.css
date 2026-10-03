@@ -88,6 +88,7 @@
 }
 
 .create-modal__grid input,
+.create-modal__grid select,
 .create-modal__grid textarea {
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--border);
@@ -98,6 +99,7 @@
 }
 
 .create-modal__grid input:focus,
+.create-modal__grid select:focus,
 .create-modal__grid textarea:focus {
   outline: none;
   border-color: var(--accent);
