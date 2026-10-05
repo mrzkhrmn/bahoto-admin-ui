@@ -1,26 +1,15 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
-import { FiPlus, FiX } from 'react-icons/fi'
-import type {
-  CariCreateWithProductRequest,
-  QuantityUnit,
-} from '../types/cari'
+import { FiEdit2, FiX } from 'react-icons/fi'
+import type { Cari, CariUpdateRequest, QuantityUnit } from '../types/cari'
 import './OilChangeCreateForm.css'
 
-interface CariFormProps {
+interface CariEntryEditFormProps {
   open: boolean
+  entry: Cari | null
   onClose: () => void
-  onCreate: (payload: CariCreateWithProductRequest) => Promise<void>
+  onUpdate: (payload: CariUpdateRequest) => Promise<void>
   isSubmitting: boolean
-}
-
-const emptyForm = {
-  brand: '',
-  name: '',
-  quantityUnit: 'Adet' as QuantityUnit,
-  quantity: '',
-  incomingAmount: '',
-  paidAmount: '',
 }
 
 function parseAmount(raw: string): number | 'invalid' {
@@ -63,36 +52,40 @@ function getErrorMessage(err: unknown, fallback: string): string {
   return fallback
 }
 
-export function CariCreateForm({
+function toUnit(value: string | undefined): QuantityUnit {
+  return value?.toLowerCase() === 'koli' ? 'Koli' : 'Adet'
+}
+
+export function CariEntryEditForm({
   open,
+  entry,
   onClose,
-  onCreate,
+  onUpdate,
   isSubmitting,
-}: CariFormProps) {
-  const [form, setForm] = useState(emptyForm)
+}: CariEntryEditFormProps) {
+  const [quantityUnit, setQuantityUnit] = useState<QuantityUnit>('Adet')
+  const [quantity, setQuantity] = useState('')
+  const [incomingAmount, setIncomingAmount] = useState('')
+  const [paidAmount, setPaidAmount] = useState('')
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!open) return
-    setForm(emptyForm)
+    if (!open || !entry) return
+    setQuantityUnit(toUnit(entry.quantityUnit))
+    setQuantity(String(entry.quantity ?? ''))
+    setIncomingAmount(String(entry.incomingAmount ?? ''))
+    setPaidAmount(String(entry.paidAmount ?? ''))
     setError(null)
-  }, [open])
+  }, [open, entry])
 
   const balancePreview = (() => {
-    const incoming = parseAmount(form.incomingAmount)
-    const paid = parseAmount(form.paidAmount)
+    const incoming = parseAmount(incomingAmount)
+    const paid = parseAmount(paidAmount)
     if (incoming === 'invalid' || paid === 'invalid') return null
     return incoming - paid
   })()
 
-  if (!open) return null
-
-  const update = <K extends keyof typeof emptyForm>(
-    key: K,
-    value: (typeof emptyForm)[K],
-  ) => {
-    setForm((prev) => ({ ...prev, [key]: value }))
-  }
+  if (!open || !entry) return null
 
   const handleClose = () => {
     if (isSubmitting) return
@@ -103,44 +96,35 @@ export function CariCreateForm({
     e.preventDefault()
     setError(null)
 
-    if (!form.brand.trim()) {
-      setError('Marka zorunludur.')
-      return
-    }
-    if (!form.name.trim()) {
-      setError('Ürün adı zorunludur.')
-      return
-    }
+    const parsedQuantity = parseQuantity(quantity)
+    const incoming = parseAmount(incomingAmount)
+    const paid = parseAmount(paidAmount)
 
-    const quantity = parseQuantity(form.quantity)
-    const incomingAmount = parseAmount(form.incomingAmount)
-    const paidAmount = parseAmount(form.paidAmount)
-
-    if (quantity === 'invalid') {
+    if (parsedQuantity === 'invalid') {
       setError('Miktar en az 1 olmalıdır.')
       return
     }
-    if (incomingAmount === 'invalid') {
+    if (incoming === 'invalid') {
       setError('Gelen miktar geçerli bir değer olmalıdır.')
       return
     }
-    if (paidAmount === 'invalid') {
+    if (paid === 'invalid') {
       setError('Ödenen miktar geçerli bir değer olmalıdır.')
       return
     }
 
     try {
-      await onCreate({
-        brand: form.brand.trim(),
-        name: form.name.trim(),
-        quantity,
-        quantityUnit: form.quantityUnit,
-        incomingAmount,
-        paidAmount,
+      await onUpdate({
+        id: entry.id,
+        productId: entry.productId,
+        quantity: parsedQuantity,
+        quantityUnit,
+        incomingAmount: incoming,
+        paidAmount: paid,
       })
       onClose()
     } catch (err) {
-      setError(getErrorMessage(err, 'Cari kaydı oluşturulamadı.'))
+      setError(getErrorMessage(err, 'Cari kaydı güncellenemedi.'))
     }
   }
 
@@ -155,7 +139,7 @@ export function CariCreateForm({
       <div className="create-modal__panel">
         <header className="create-modal__header">
           <h2>
-            <FiPlus aria-hidden /> Yeni Cari Kaydı
+            <FiEdit2 aria-hidden /> Hareket Düzenle
           </h2>
           <button
             type="button"
@@ -178,33 +162,17 @@ export function CariCreateForm({
             </div>
           ) : null}
 
+          <p className="create-modal__hint">
+            {entry.productBrand} — {entry.productName}
+          </p>
+
           <div className="create-modal__grid">
-            <label>
-              Marka
-              <input
-                type="text"
-                value={form.brand}
-                onChange={(e) => update('brand', e.target.value)}
-                required
-                disabled={isSubmitting}
-              />
-            </label>
-            <label>
-              Ürün Adı
-              <input
-                type="text"
-                value={form.name}
-                onChange={(e) => update('name', e.target.value)}
-                required
-                disabled={isSubmitting}
-              />
-            </label>
             <label>
               Birim
               <select
-                value={form.quantityUnit}
+                value={quantityUnit}
                 onChange={(e) =>
-                  update('quantityUnit', e.target.value as QuantityUnit)
+                  setQuantityUnit(e.target.value as QuantityUnit)
                 }
                 disabled={isSubmitting}
               >
@@ -217,13 +185,10 @@ export function CariCreateForm({
               <input
                 type="text"
                 inputMode="numeric"
-                value={form.quantity}
-                onChange={(e) => update('quantity', e.target.value)}
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
                 required
                 disabled={isSubmitting}
-                placeholder={
-                  form.quantityUnit === 'Koli' ? 'Örn. 10' : 'Örn. 20'
-                }
               />
             </label>
             <label>
@@ -231,8 +196,8 @@ export function CariCreateForm({
               <input
                 type="text"
                 inputMode="decimal"
-                value={form.incomingAmount}
-                onChange={(e) => update('incomingAmount', e.target.value)}
+                value={incomingAmount}
+                onChange={(e) => setIncomingAmount(e.target.value)}
                 required
                 disabled={isSubmitting}
               />
@@ -242,8 +207,8 @@ export function CariCreateForm({
               <input
                 type="text"
                 inputMode="decimal"
-                value={form.paidAmount}
-                onChange={(e) => update('paidAmount', e.target.value)}
+                value={paidAmount}
+                onChange={(e) => setPaidAmount(e.target.value)}
                 required
                 disabled={isSubmitting}
               />
@@ -275,7 +240,7 @@ export function CariCreateForm({
               className="btn btn--primary"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Kaydediliyor...' : 'Kaydet'}
+              {isSubmitting ? 'Kaydediliyor...' : 'Güncelle'}
             </button>
           </div>
         </form>

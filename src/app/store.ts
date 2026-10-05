@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { baseApi } from '../api/baseApi'
 import '../api/yaglamaServisiApi'
-import '../api/productApi'
 import '../api/cariApi'
 import '../api/authApi'
 import { authReducer } from '../features/auth/authSlice'

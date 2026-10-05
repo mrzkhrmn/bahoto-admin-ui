@@ -3,7 +3,6 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { AdminLayout } from './layout/AdminLayout'
 import { CariPage } from './pages/CariPage'
 import { LoginPage } from './pages/LoginPage'
-import { UrunlerPage } from './pages/UrunlerPage'
 import { YaglamaServisiPage } from './pages/YaglamaServisiPage'
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
           <Route element={<AdminLayout />}>
             <Route index element={<Navigate to="/yaglama-servisi" replace />} />
             <Route path="yaglama-servisi" element={<YaglamaServisiPage />} />
-            <Route path="urunler" element={<UrunlerPage />} />
             <Route path="cari" element={<CariPage />} />
           </Route>
         </Route>

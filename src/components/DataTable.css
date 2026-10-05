@@ -137,7 +137,7 @@
   padding: 0.85rem 0.95rem;
   text-align: left;
   white-space: nowrap;
-  border-bottom: 2px solid #d4dde4;
+  border-bottom: 2px solid #8aa0ae;
   border-right: 2px solid #8aa0ae;
 }
 
@@ -151,11 +151,7 @@
   font-weight: 700;
   font-size: 0.9rem;
   color: #0a4f4f;
-  border-bottom: 2px solid #9cb8b8;
-}
-
-.data-table tbody tr:last-child td {
-  border-bottom: none;
+  border-bottom: 2px solid #8aa0ae;
 }
 
 .data-table tbody tr:hover {
