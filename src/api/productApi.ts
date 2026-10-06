@@ -30,7 +30,7 @@ export const productApi = baseApi.injectEndpoints({
         body,
       }),
       transformResponse: (response: ApiResponse<Product>) => response.data,
-      invalidatesTags: ['Product'],
+      invalidatesTags: ['Product', 'Cari'],
     }),
     updateProduct: builder.mutation<Product, ProductUpdateRequest>({
       query: (body) => ({
@@ -39,7 +39,7 @@ export const productApi = baseApi.injectEndpoints({
         body,
       }),
       transformResponse: (response: ApiResponse<Product>) => response.data,
-      invalidatesTags: ['Product'],
+      invalidatesTags: ['Product', 'Cari'],
     }),
     deleteProduct: builder.mutation<void, ProductDeleteRequest>({
       query: (body) => ({
@@ -47,7 +47,7 @@ export const productApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Product'],
+      invalidatesTags: ['Product', 'Cari'],
     }),
     deleteBrand: builder.mutation<void, ProductDeleteBrandRequest>({
       query: (body) => ({
@@ -55,7 +55,7 @@ export const productApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Product'],
+      invalidatesTags: ['Product', 'Cari'],
     }),
     reorderBrands: builder.mutation<void, ProductReorderBrandsRequest>({
       query: (body) => ({

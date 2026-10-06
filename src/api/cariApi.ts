@@ -42,7 +42,7 @@ export const cariApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: ApiResponse<CariProductGroup>) =>
         response.data,
-      invalidatesTags: ['Cari'],
+      invalidatesTags: ['Cari', 'Product'],
     }),
     updateCari: builder.mutation<Cari, CariUpdateRequest>({
       query: (body) => ({
