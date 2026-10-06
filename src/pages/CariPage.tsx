@@ -247,14 +247,14 @@ export function CariPage() {
     if (incomingAmount === 'invalid') {
       setAddErrors((prev) => ({
         ...prev,
-        [group.productId]: 'Gelen miktar geçerli bir değer olmalıdır.',
+        [group.productId]: 'Gelen fiyat geçerli bir değer olmalıdır.',
       }))
       return
     }
     if (paidAmount === 'invalid') {
       setAddErrors((prev) => ({
         ...prev,
-        [group.productId]: 'Ödenen miktar geçerli bir değer olmalıdır.',
+        [group.productId]: 'Ödenen fiyat geçerli bir değer olmalıdır.',
       }))
       return
     }
@@ -404,8 +404,8 @@ export function CariPage() {
                 <th>Marka</th>
                 <th>Ürün Adı</th>
                 <th>Koli / Adet</th>
-                <th>Gelen</th>
-                <th>Ödenen</th>
+                <th>Gelen Fiyat</th>
+                <th>Ödenen Fiyat</th>
                 <th>Bakiye</th>
                 <th>Hareket</th>
               </tr>
@@ -453,7 +453,9 @@ export function CariPage() {
                           </span>
                         </td>
                         <td className="data-table__cell--brand">{group.brand}</td>
-                        <td className="data-table__cell--name">{group.name}</td>
+                        <td className="data-table__cell--name">
+                          {group.name?.trim() ? group.name : '—'}
+                        </td>
                         <td className="data-table__cell--qty">
                           {group.quantityLabel || '—'}
                         </td>
@@ -483,8 +485,8 @@ export function CariPage() {
                                       <tr>
                                         <th>Tarih</th>
                                         <th>Koli / Adet</th>
-                                        <th>Gelen</th>
-                                        <th>Ödenen</th>
+                                        <th>Gelen Fiyat</th>
+                                        <th>Ödenen Fiyat</th>
                                         <th>Bakiye</th>
                                         <th aria-label="İşlemler" />
                                       </tr>
@@ -603,7 +605,7 @@ export function CariPage() {
                                   />
                                 </label>
                                 <label>
-                                  Gelen
+                                  Gelen Fiyat
                                   <input
                                     type="text"
                                     inputMode="decimal"
@@ -619,7 +621,7 @@ export function CariPage() {
                                   />
                                 </label>
                                 <label>
-                                  Ödenen
+                                  Ödenen Fiyat
                                   <input
                                     type="text"
                                     inputMode="decimal"

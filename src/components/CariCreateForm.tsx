@@ -23,18 +23,18 @@ const emptyForm = {
   paidAmount: '',
 }
 
-function parseAmount(raw: string): number | 'invalid' {
+function parseAmount(raw: string): number | 'invalid' | 'empty' {
   const trimmed = raw.trim()
-  if (trimmed === '') return 'invalid'
+  if (trimmed === '') return 'empty'
   const normalized = trimmed.replace(',', '.')
   const value = Number(normalized)
   if (!Number.isFinite(value) || value < 0) return 'invalid'
   return value
 }
 
-function parseQuantity(raw: string): number | 'invalid' {
+function parseQuantity(raw: string): number | 'invalid' | 'empty' {
   const trimmed = raw.trim()
-  if (trimmed === '') return 'invalid'
+  if (trimmed === '') return 'empty'
   if (!/^\d+$/.test(trimmed)) return 'invalid'
   const value = Number(trimmed)
   if (!Number.isInteger(value) || value < 1) return 'invalid'
@@ -81,7 +81,14 @@ export function CariCreateForm({
   const balancePreview = (() => {
     const incoming = parseAmount(form.incomingAmount)
     const paid = parseAmount(form.paidAmount)
-    if (incoming === 'invalid' || paid === 'invalid') return null
+    if (
+      incoming === 'invalid' ||
+      paid === 'invalid' ||
+      incoming === 'empty' ||
+      paid === 'empty'
+    ) {
+      return null
+    }
     return incoming - paid
   })()
 
@@ -107,37 +114,45 @@ export function CariCreateForm({
       setError('Marka zorunludur.')
       return
     }
-    if (!form.name.trim()) {
-      setError('Ürün adı zorunludur.')
-      return
-    }
 
     const quantity = parseQuantity(form.quantity)
     const incomingAmount = parseAmount(form.incomingAmount)
     const paidAmount = parseAmount(form.paidAmount)
 
-    if (quantity === 'invalid') {
-      setError('Miktar en az 1 olmalıdır.')
-      return
+    const hasAnyCariField =
+      quantity !== 'empty' ||
+      incomingAmount !== 'empty' ||
+      paidAmount !== 'empty'
+
+    if (hasAnyCariField) {
+      if (quantity === 'invalid' || quantity === 'empty') {
+        setError('Miktar en az 1 olmalıdır.')
+        return
+      }
+      if (incomingAmount === 'invalid' || incomingAmount === 'empty') {
+        setError('Gelen fiyat geçerli bir değer olmalıdır.')
+        return
+      }
+      if (paidAmount === 'invalid' || paidAmount === 'empty') {
+        setError('Ödenen fiyat geçerli bir değer olmalıdır.')
+        return
+      }
     }
-    if (incomingAmount === 'invalid') {
-      setError('Gelen miktar geçerli bir değer olmalıdır.')
-      return
+
+    const payload: CariCreateWithProductRequest = {
+      brand: form.brand.trim(),
+      name: form.name.trim() || undefined,
+      quantityUnit: form.quantityUnit,
     }
-    if (paidAmount === 'invalid') {
-      setError('Ödenen miktar geçerli bir değer olmalıdır.')
-      return
+
+    if (hasAnyCariField) {
+      payload.quantity = quantity as number
+      payload.incomingAmount = incomingAmount as number
+      payload.paidAmount = paidAmount as number
     }
 
     try {
-      await onCreate({
-        brand: form.brand.trim(),
-        name: form.name.trim(),
-        quantity,
-        quantityUnit: form.quantityUnit,
-        incomingAmount,
-        paidAmount,
-      })
+      await onCreate(payload)
       onClose()
     } catch (err) {
       setError(getErrorMessage(err, 'Cari kaydı oluşturulamadı.'))
@@ -178,6 +193,10 @@ export function CariCreateForm({
             </div>
           ) : null}
 
+          <p className="create-modal__hint">
+            Yalnızca marka zorunludur. Diğer alanları sonra doldurabilirsiniz.
+          </p>
+
           <div className="create-modal__grid">
             <label>
               Marka
@@ -195,8 +214,8 @@ export function CariCreateForm({
                 type="text"
                 value={form.name}
                 onChange={(e) => update('name', e.target.value)}
-                required
                 disabled={isSubmitting}
+                placeholder="İsteğe bağlı"
               />
             </label>
             <label>
@@ -219,7 +238,6 @@ export function CariCreateForm({
                 inputMode="numeric"
                 value={form.quantity}
                 onChange={(e) => update('quantity', e.target.value)}
-                required
                 disabled={isSubmitting}
                 placeholder={
                   form.quantityUnit === 'Koli' ? 'Örn. 10' : 'Örn. 20'
@@ -227,25 +245,25 @@ export function CariCreateForm({
               />
             </label>
             <label>
-              Gelen Miktar
+              Gelen Fiyat
               <input
                 type="text"
                 inputMode="decimal"
                 value={form.incomingAmount}
                 onChange={(e) => update('incomingAmount', e.target.value)}
-                required
                 disabled={isSubmitting}
+                placeholder="İsteğe bağlı"
               />
             </label>
             <label>
-              Ödenen Miktar
+              Ödenen Fiyat
               <input
                 type="text"
                 inputMode="decimal"
                 value={form.paidAmount}
                 onChange={(e) => update('paidAmount', e.target.value)}
-                required
                 disabled={isSubmitting}
+                placeholder="İsteğe bağlı"
               />
             </label>
             <label className="create-modal__full">

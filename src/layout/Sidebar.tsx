@@ -6,6 +6,7 @@ import {
   FiDroplet,
   FiLogOut,
   FiFileText,
+  FiTag,
 } from 'react-icons/fi'
 import { useLogoutMutation } from '../api/authApi'
 import { baseApi } from '../api/baseApi'
@@ -102,6 +103,16 @@ export function Sidebar() {
         >
           <FiFileText aria-hidden />
           <span className="sidebar__link-label">Cari</span>
+        </NavLink>
+        <NavLink
+          to="/fiyat-tablosu"
+          className={({ isActive }) =>
+            `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
+          }
+          title="Fiyat Tablosu"
+        >
+          <FiTag aria-hidden />
+          <span className="sidebar__link-label">Fiyat Tablosu</span>
         </NavLink>
       </nav>
 

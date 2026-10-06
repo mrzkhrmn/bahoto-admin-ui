@@ -49,11 +49,11 @@ export interface CariCreateRequest {
 
 export interface CariCreateWithProductRequest {
   brand: string
-  name: string
-  quantity: number
-  quantityUnit: QuantityUnit
-  incomingAmount: number
-  paidAmount: number
+  name?: string
+  quantity?: number
+  quantityUnit?: QuantityUnit
+  incomingAmount?: number
+  paidAmount?: number
 }
 
 export interface CariUpdateRequest {

@@ -69,9 +69,6 @@
   gap: 0.65rem;
   align-items: end;
   padding: 0.9rem;
-  border: 2px dashed #9cb8b8;
-  border-radius: 0.55rem;
-  background: #fff;
 }
 
 .cari-page .cari-expand__add label {

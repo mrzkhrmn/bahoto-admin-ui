@@ -105,11 +105,11 @@ export function CariEntryEditForm({
       return
     }
     if (incoming === 'invalid') {
-      setError('Gelen miktar geçerli bir değer olmalıdır.')
+      setError('Gelen fiyat geçerli bir değer olmalıdır.')
       return
     }
     if (paid === 'invalid') {
-      setError('Ödenen miktar geçerli bir değer olmalıdır.')
+      setError('Ödenen fiyat geçerli bir değer olmalıdır.')
       return
     }
 
@@ -192,7 +192,7 @@ export function CariEntryEditForm({
               />
             </label>
             <label>
-              Gelen Miktar
+              Gelen Fiyat
               <input
                 type="text"
                 inputMode="decimal"
@@ -203,7 +203,7 @@ export function CariEntryEditForm({
               />
             </label>
             <label>
-              Ödenen Miktar
+              Ödenen Fiyat
               <input
                 type="text"
                 inputMode="decimal"
