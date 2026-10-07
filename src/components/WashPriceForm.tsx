@@ -162,7 +162,7 @@ export function WashPriceForm({
         aria-label="Kapat"
         onClick={handleClose}
       />
-      <div className="create-modal__panel">
+      <div className="create-modal__panel create-modal__panel--wide">
         <header className="create-modal__header">
           <h2>
             <FiPlus aria-hidden />
@@ -203,46 +203,48 @@ export function WashPriceForm({
             </label>
           </div>
 
-          {WASH_SERVICE_COLUMNS.map((col) => {
-            const fields = fieldMap[col.key]
-            return (
-              <div key={col.key}>
-                <p className="service-price-form__section-title">{col.label}</p>
-                <div className="service-price-form__pair">
-                  <label>
-                    K. Kartı
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      value={prices[fields.card]}
-                      onChange={(e) =>
-                        setPrices((prev) => ({
-                          ...prev,
-                          [fields.card]: e.target.value,
-                        }))
-                      }
-                      disabled={isSubmitting}
-                    />
-                  </label>
-                  <label>
-                    Nakit
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      value={prices[fields.cash]}
-                      onChange={(e) =>
-                        setPrices((prev) => ({
-                          ...prev,
-                          [fields.cash]: e.target.value,
-                        }))
-                      }
-                      disabled={isSubmitting}
-                    />
-                  </label>
+          <div className="service-price-form__services">
+            {WASH_SERVICE_COLUMNS.map((col) => {
+              const fields = fieldMap[col.key]
+              return (
+                <div key={col.key} className="service-price-form__service">
+                  <p className="service-price-form__section-title">{col.label}</p>
+                  <div className="service-price-form__pair">
+                    <label>
+                      K. Kartı
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        value={prices[fields.card]}
+                        onChange={(e) =>
+                          setPrices((prev) => ({
+                            ...prev,
+                            [fields.card]: e.target.value,
+                          }))
+                        }
+                        disabled={isSubmitting}
+                      />
+                    </label>
+                    <label>
+                      Nakit
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        value={prices[fields.cash]}
+                        onChange={(e) =>
+                          setPrices((prev) => ({
+                            ...prev,
+                            [fields.cash]: e.target.value,
+                          }))
+                        }
+                        disabled={isSubmitting}
+                      />
+                    </label>
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
 
           <div className="create-modal__actions">
             <button

@@ -259,7 +259,7 @@ export function KuruYaglamaFiyatTablosuPage() {
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr className="service-price-table__group-end">
                     <td className="service-price-table__pay--cash">NAKİT</td>
                     {DRY_LUBE_SERVICE_COLUMNS.map((col) => (
                       <td

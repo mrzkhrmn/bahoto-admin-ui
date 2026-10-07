@@ -28,6 +28,10 @@
   width: min(100%, 420px);
 }
 
+.create-modal__panel--wide {
+  width: min(100%, 980px);
+}
+
 .create-modal__grid--single {
   grid-template-columns: 1fr;
 }

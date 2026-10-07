@@ -34,17 +34,25 @@
 
 .service-price-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   min-width: 920px;
 }
 
 .service-price-table th,
 .service-price-table td {
   border: 1px solid #8aa0ae;
+  border-top: none;
+  border-left: none;
   padding: 0.65rem 0.75rem;
   text-align: center;
   vertical-align: middle;
   font-size: 0.95rem;
+}
+
+.service-price-table th:first-child,
+.service-price-table td:first-child {
+  border-left: 1px solid #8aa0ae;
 }
 
 .service-price-table thead th {
@@ -52,6 +60,7 @@
   color: #0f5c5c;
   font-weight: 700;
   white-space: nowrap;
+  border-top: 1px solid #8aa0ae;
 }
 
 .service-price-table__brand {
@@ -88,14 +97,35 @@
   background: var(--row-hover);
 }
 
+/* Sadece yatay: Marka-Model grupları arası kalın ayırıcı */
+.service-price-table__brand,
+.service-price-table__actions {
+  box-shadow: inset 0 -4px 0 0 #2f4656;
+}
+
+.service-price-table__group-end td {
+  box-shadow: inset 0 -4px 0 0 #2f4656;
+  border-bottom: 1px solid #2f4656;
+}
+
 .service-price-page__empty {
   padding: 2rem 1rem;
   text-align: center;
   color: var(--muted);
 }
 
+.service-price-form__services {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem 1rem;
+}
+
+.service-price-form__service {
+  min-width: 0;
+}
+
 .service-price-form__section-title {
-  margin: 0.25rem 0 0;
+  margin: 0 0 0.35rem;
   font-size: 0.9rem;
   font-weight: 700;
   color: #0f5c5c;
@@ -122,6 +152,12 @@
   font: inherit;
   color: var(--text);
   background: #fff;
+}
+
+@media (max-width: 720px) {
+  .service-price-form__services {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
