@@ -24,6 +24,14 @@
   box-shadow: 0 16px 48px rgba(15, 28, 36, 0.18);
 }
 
+.create-modal__panel--narrow {
+  width: min(100%, 420px);
+}
+
+.create-modal__grid--single {
+  grid-template-columns: 1fr;
+}
+
 .create-modal__header {
   display: flex;
   align-items: center;

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { DragEvent } from 'react'
-import { FiEdit2, FiPlus, FiSearch, FiTrash2 } from 'react-icons/fi'
+import { FiEdit2, FiPlus, FiSearch, FiTrash2, FiTrendingUp } from 'react-icons/fi'
 import {
+  useApplyPriceIncreaseMutation,
   useCreateProductMutation,
   useDeleteBrandMutation,
   useDeleteProductMutation,
@@ -10,10 +11,13 @@ import {
   useUpdateProductMutation,
 } from '../api/productApi'
 import { useAppDispatch } from '../app/hooks'
+import { PriceIncreaseForm } from '../components/PriceIncreaseForm'
 import { ProductForm } from '../components/ProductForm'
 import { setGlobalLoading } from '../features/ui/uiSlice'
 import type {
+  PriceIncreaseScope,
   Product,
+  ProductApplyPriceIncreaseRequest,
   ProductBrandGroup,
   ProductCreateRequest,
   ProductUpdateRequest,
@@ -73,6 +77,10 @@ export function FiyatTablosuPage() {
   )
   const [dragBrand, setDragBrand] = useState<string | null>(null)
   const [dragOverBrand, setDragOverBrand] = useState<string | null>(null)
+  const [zamOpen, setZamOpen] = useState(false)
+  const [zamScope, setZamScope] = useState<PriceIncreaseScope>('all')
+  const [zamBrand, setZamBrand] = useState('')
+  const [zamProduct, setZamProduct] = useState<Product | null>(null)
 
   const { data, isFetching, isError, error } = useGetProductListQuery({
     page,
@@ -84,6 +92,8 @@ export function FiyatTablosuPage() {
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation()
   const [deleteBrand, { isLoading: isDeletingBrand }] = useDeleteBrandMutation()
   const [reorderBrands, { isLoading: isReordering }] = useReorderBrandsMutation()
+  const [applyPriceIncrease, { isLoading: isApplyingZam }] =
+    useApplyPriceIncreaseMutation()
 
   useEffect(() => {
     const items = data?.items ?? []
@@ -109,7 +119,8 @@ export function FiyatTablosuPage() {
           isUpdating ||
           isDeleting ||
           isDeletingBrand ||
-          isReordering,
+          isReordering ||
+          isApplyingZam,
       ),
     )
     return () => {
@@ -123,6 +134,7 @@ export function FiyatTablosuPage() {
     isDeleting,
     isDeletingBrand,
     isReordering,
+    isApplyingZam,
   ])
 
   const totalPages = Math.max(
@@ -169,6 +181,25 @@ export function FiyatTablosuPage() {
     setInitialBrand('')
     setEditingProduct(product)
     setFormOpen(true)
+  }
+
+  const openZam = (
+    scope: PriceIncreaseScope,
+    options?: { brand?: string; product?: Product },
+  ) => {
+    setZamScope(scope)
+    setZamBrand(options?.brand ?? '')
+    setZamProduct(options?.product ?? null)
+    setZamOpen(true)
+  }
+
+  const handleApplyZam = async (payload: ProductApplyPriceIncreaseRequest) => {
+    const result = await applyPriceIncrease(payload).unwrap()
+    const skipped =
+      result.skippedCount > 0
+        ? ` (${result.skippedCount} ürün atlandı)`
+        : ''
+    alert(`${result.updatedCount} ürünün fiyatı güncellendi.${skipped}`)
   }
 
   const handleSearchSubmit = () => {
@@ -323,6 +354,26 @@ export function FiyatTablosuPage() {
           </span>
           <button
             type="button"
+            className="btn btn--ghost btn--sm"
+            onClick={() => openZam('all')}
+            disabled={groups.length === 0}
+            title="Tüm ürünlere zam uygula"
+          >
+            <FiTrendingUp aria-hidden />
+            Toplu Zam
+          </button>
+          <button
+            type="button"
+            className="btn btn--ghost btn--sm"
+            onClick={() => openZam('brand')}
+            disabled={groups.length === 0}
+            title="Marka bazlı zam uygula"
+          >
+            <FiTrendingUp aria-hidden />
+            Marka Zamı
+          </button>
+          <button
+            type="button"
             className="btn btn--primary btn--sm"
             onClick={() => openCreate()}
           >
@@ -411,6 +462,17 @@ export function FiyatTablosuPage() {
                         <button
                           type="button"
                           className="btn btn--edit"
+                          aria-label="Markaya zam"
+                          title="Markaya zam"
+                          onClick={() =>
+                            openZam('brand', { brand: group.brand })
+                          }
+                        >
+                          <FiTrendingUp aria-hidden />
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn--edit"
                           aria-label="Ürün ekle"
                           title="Ürün ekle"
                           onClick={() => openCreate(group.brand)}
@@ -455,6 +517,17 @@ export function FiyatTablosuPage() {
                                 className="data-table__actions"
                                 onPointerDown={(e) => e.stopPropagation()}
                               >
+                                <button
+                                  type="button"
+                                  className="btn btn--edit"
+                                  aria-label="Zam uygula"
+                                  title="Zam uygula"
+                                  onClick={() =>
+                                    openZam('product', { product })
+                                  }
+                                >
+                                  <FiTrendingUp aria-hidden />
+                                </button>
                                 <button
                                   type="button"
                                   className="btn btn--edit"
@@ -522,6 +595,17 @@ export function FiyatTablosuPage() {
         onCreate={handleCreate}
         onUpdate={handleUpdate}
         isSubmitting={isCreating || isUpdating}
+      />
+
+      <PriceIncreaseForm
+        open={zamOpen}
+        scope={zamScope}
+        brand={zamBrand}
+        product={zamProduct}
+        brands={groups.map((g) => g.brand)}
+        onClose={() => setZamOpen(false)}
+        onSubmit={handleApplyZam}
+        isSubmitting={isApplyingZam}
       />
     </div>
   )

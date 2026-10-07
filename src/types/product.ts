@@ -52,6 +52,20 @@ export interface ProductReorderBrandsRequest {
   brands: string[]
 }
 
+export type PriceIncreaseScope = 'all' | 'brand' | 'product'
+
+export interface ProductApplyPriceIncreaseRequest {
+  scope: PriceIncreaseScope
+  brand?: string | null
+  productId?: string | null
+  percent: number
+}
+
+export interface ProductApplyPriceIncreaseResult {
+  updatedCount: number
+  skippedCount: number
+}
+
 export interface ApiResponse<T> {
   success: boolean
   message: string

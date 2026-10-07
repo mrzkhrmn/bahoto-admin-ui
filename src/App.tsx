@@ -3,8 +3,10 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { AdminLayout } from './layout/AdminLayout'
 import { CariPage } from './pages/CariPage'
 import { FiyatTablosuPage } from './pages/FiyatTablosuPage'
+import { KuruYaglamaFiyatTablosuPage } from './pages/KuruYaglamaFiyatTablosuPage'
 import { LoginPage } from './pages/LoginPage'
 import { YaglamaServisiPage } from './pages/YaglamaServisiPage'
+import { YikamaFiyatTablosuPage } from './pages/YikamaFiyatTablosuPage'
 
 function App() {
   return (
@@ -18,6 +20,14 @@ function App() {
             <Route path="yaglama-servisi" element={<YaglamaServisiPage />} />
             <Route path="cari" element={<CariPage />} />
             <Route path="fiyat-tablosu" element={<FiyatTablosuPage />} />
+            <Route
+              path="yikama-fiyat-tablosu"
+              element={<YikamaFiyatTablosuPage />}
+            />
+            <Route
+              path="kuru-yaglama-fiyat-tablosu"
+              element={<KuruYaglamaFiyatTablosuPage />}
+            />
           </Route>
         </Route>
 

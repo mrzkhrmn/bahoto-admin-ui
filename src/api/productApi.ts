@@ -7,6 +7,8 @@ import type {
   ProductDeleteRequest,
   ProductListData,
   ProductListRequest,
+  ProductApplyPriceIncreaseRequest,
+  ProductApplyPriceIncreaseResult,
   ProductReorderBrandsRequest,
   ProductUpdateRequest,
 } from '../types/product'
@@ -65,6 +67,20 @@ export const productApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Product'],
     }),
+    applyPriceIncrease: builder.mutation<
+      ProductApplyPriceIncreaseResult,
+      ProductApplyPriceIncreaseRequest
+    >({
+      query: (body) => ({
+        url: 'api/product/apply-price-increase',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (
+        response: ApiResponse<ProductApplyPriceIncreaseResult>,
+      ) => response.data,
+      invalidatesTags: ['Product', 'Cari'],
+    }),
   }),
 })
 
@@ -75,4 +91,5 @@ export const {
   useDeleteProductMutation,
   useDeleteBrandMutation,
   useReorderBrandsMutation,
+  useApplyPriceIncreaseMutation,
 } = productApi

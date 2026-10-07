@@ -97,9 +97,9 @@
 }
 
 .fiyat-page__column {
-  --side-col: 7.25rem;
-  flex: 0 0 19rem;
-  min-width: 19rem;
+  --side-col: 8.5rem;
+  flex: 0 0 20.25rem;
+  min-width: 20.25rem;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -234,10 +234,15 @@
   font-size: 0.95rem;
 }
 
+.fiyat-page__column-actions,
+.fiyat-page__product-side .data-table__actions {
+  flex-wrap: wrap;
+}
+
 @media (max-width: 640px) {
   .fiyat-page__column {
-    --side-col: 6.5rem;
-    flex-basis: 16.5rem;
-    min-width: 16.5rem;
+    --side-col: 7.5rem;
+    flex-basis: 18rem;
+    min-width: 18rem;
   }
 }

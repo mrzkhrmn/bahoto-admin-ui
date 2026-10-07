@@ -7,6 +7,8 @@ import {
   FiLogOut,
   FiFileText,
   FiTag,
+  FiTruck,
+  FiWind,
 } from 'react-icons/fi'
 import { useLogoutMutation } from '../api/authApi'
 import { baseApi } from '../api/baseApi'
@@ -113,6 +115,26 @@ export function Sidebar() {
         >
           <FiTag aria-hidden />
           <span className="sidebar__link-label">Fiyat Tablosu</span>
+        </NavLink>
+        <NavLink
+          to="/yikama-fiyat-tablosu"
+          className={({ isActive }) =>
+            `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
+          }
+          title="Yıkama Fiyat Tablosu"
+        >
+          <FiTruck aria-hidden />
+          <span className="sidebar__link-label">Yıkama Fiyatları</span>
+        </NavLink>
+        <NavLink
+          to="/kuru-yaglama-fiyat-tablosu"
+          className={({ isActive }) =>
+            `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
+          }
+          title="Kuru Yağlama Fiyat Tablosu"
+        >
+          <FiWind aria-hidden />
+          <span className="sidebar__link-label">Kuru Yağlama Fiyatları</span>
         </NavLink>
       </nav>
 
