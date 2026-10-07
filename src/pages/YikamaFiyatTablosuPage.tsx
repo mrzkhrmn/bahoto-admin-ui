@@ -279,7 +279,7 @@ export function YikamaFiyatTablosuPage() {
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr className="service-price-table__group-end">
                     <td className="service-price-table__pay--cash">NAKİT</td>
                     {WASH_SERVICE_COLUMNS.map((col) => (
                       <td
