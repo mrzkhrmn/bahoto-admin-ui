@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { AdminLayout } from './layout/AdminLayout'
+import { AracBakimListesiPage } from './pages/AracBakimListesiPage'
 import { CariPage } from './pages/CariPage'
 import { FiyatTablosuPage } from './pages/FiyatTablosuPage'
 import { KuruYaglamaFiyatTablosuPage } from './pages/KuruYaglamaFiyatTablosuPage'
@@ -27,6 +28,10 @@ function App() {
             <Route
               path="kuru-yaglama-fiyat-tablosu"
               element={<KuruYaglamaFiyatTablosuPage />}
+            />
+            <Route
+              path="arac-bakim-listesi"
+              element={<AracBakimListesiPage />}
             />
           </Route>
         </Route>

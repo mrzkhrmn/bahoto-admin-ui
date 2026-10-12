@@ -1,5 +1,5 @@
-import { Fragment, useEffect, useState } from 'react'
-import { FiEdit2, FiPlus, FiTrash2, FiTrendingUp } from 'react-icons/fi'
+import { Fragment, useEffect, useMemo, useState } from 'react'
+import { FiEdit2, FiPlus, FiSearch, FiTrash2, FiTrendingUp } from 'react-icons/fi'
 import {
   useApplyWashPriceIncreaseMutation,
   useCreateWashPriceMutation,
@@ -80,6 +80,7 @@ export function YikamaFiyatTablosuPage() {
   const [editing, setEditing] = useState<WashPrice | null>(null)
   const [zamOpen, setZamOpen] = useState(false)
   const [zamScope, setZamScope] = useState<ServicePriceIncreaseScope>('all')
+  const [search, setSearch] = useState('')
 
   const { data, isFetching, isError, error } = useGetWashPriceListQuery()
   const [createItem, { isLoading: isCreating }] = useCreateWashPriceMutation()
@@ -107,6 +108,13 @@ export function YikamaFiyatTablosuPage() {
   ])
 
   const items = data?.items ?? []
+  const filteredItems = useMemo(() => {
+    const q = search.trim().toLocaleLowerCase('tr')
+    if (!q) return items
+    return items.filter((item) =>
+      item.brandModel.toLocaleLowerCase('tr').includes(q),
+    )
+  }, [items, search])
 
   const listError =
     isError &&
@@ -192,7 +200,21 @@ export function YikamaFiyatTablosuPage() {
       ) : null}
 
       <div className="service-price-page__toolbar">
-        <span className="data-table__count">{items.length} marka-model</span>
+        <div className="data-table__filters">
+          <label className="data-table__search">
+            <FiSearch aria-hidden />
+            <input
+              type="search"
+              placeholder="Marka-Model ara..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </label>
+          <span className="data-table__count">
+            {filteredItems.length}
+            {search.trim() ? ` / ${items.length}` : ''} marka-model
+          </span>
+        </div>
         <div className="service-price-page__actions">
           <button
             type="button"
@@ -227,6 +249,10 @@ export function YikamaFiyatTablosuPage() {
         <div className="service-price-page__empty service-price-page__table-wrap">
           Henüz kayıt yok. Marka-Model ekleyerek başlayın.
         </div>
+      ) : filteredItems.length === 0 ? (
+        <div className="service-price-page__empty service-price-page__table-wrap">
+          Aramanızla eşleşen kayıt bulunamadı.
+        </div>
       ) : (
         <div className="service-price-page__table-wrap">
           <table className="service-price-table">
@@ -241,7 +267,7 @@ export function YikamaFiyatTablosuPage() {
               </tr>
             </thead>
             <tbody>
-              {items.map((item) => (
+              {filteredItems.map((item) => (
                 <Fragment key={item.id}>
                   <tr>
                     <td className="service-price-table__brand" rowSpan={2}>

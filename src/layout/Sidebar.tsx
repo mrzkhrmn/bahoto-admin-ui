@@ -6,6 +6,7 @@ import {
   FiDroplet,
   FiLogOut,
   FiFileText,
+  FiSettings,
   FiTag,
   FiTruck,
   FiWind,
@@ -135,6 +136,16 @@ export function Sidebar() {
         >
           <FiWind aria-hidden />
           <span className="sidebar__link-label">Kuru Yağlama Fiyatları</span>
+        </NavLink>
+        <NavLink
+          to="/arac-bakim-listesi"
+          className={({ isActive }) =>
+            `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
+          }
+          title="Araç Bakım Listesi"
+        >
+          <FiSettings aria-hidden />
+          <span className="sidebar__link-label">Araç Bakım Listesi</span>
         </NavLink>
       </nav>
 

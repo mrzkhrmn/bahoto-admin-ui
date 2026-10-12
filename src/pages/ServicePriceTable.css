@@ -89,6 +89,10 @@
   color: #1e3a5f;
 }
 
+.service-price-table__text {
+  font-weight: 700;
+}
+
 .service-price-table__actions {
   white-space: nowrap;
 }
