@@ -39,9 +39,18 @@ const emptyForm = {
   bankAccount: '',
 }
 
-function toFormState(data?: OilChange | null) {
+function toFormState(data?: OilChange | null): typeof emptyForm {
   if (!data) return emptyForm
   const method = data.paymentMethod?.trim()
+  const paymentMethod: '' | PaymentMethod =
+    method === 'Nakit' ||
+    method === 'KK' ||
+    method === 'C Iban' ||
+    method === 'M Iban'
+      ? method
+      : method === 'Kredi Kartı'
+        ? 'KK'
+        : ''
   return {
     vehicle: data.vehicle ?? '',
     plate: data.plate ?? '',
@@ -57,15 +66,7 @@ function toFormState(data?: OilChange | null) {
     note: data.note ?? '',
     employee: data.employee ?? '',
     price: data.price == null ? '' : String(data.price),
-    paymentMethod:
-      method === 'Nakit' ||
-      method === 'KK' ||
-      method === 'C Iban' ||
-      method === 'M Iban'
-        ? method
-        : method === 'Kredi Kartı'
-          ? 'KK'
-          : ('' as const),
+    paymentMethod,
     bankAccount: data.bankAccount ?? '',
   }
 }
