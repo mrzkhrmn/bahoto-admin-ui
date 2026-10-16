@@ -17,12 +17,21 @@ function formatNumber(value: number): string {
   return value.toLocaleString('tr-TR')
 }
 
-function formatPrice(value: number | null): string {
-  if (value == null) return '—'
-  return `${value.toLocaleString('tr-TR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })} TL`
+function formatPriceDisplay(row: OilChange): string {
+  const parts: string[] = []
+  if (row.price != null) {
+    parts.push(
+      `${row.price.toLocaleString('tr-TR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })} TL`,
+    )
+  }
+  const method = row.paymentMethod?.trim()
+  if (method) parts.push(method)
+  const account = row.bankAccount?.trim()
+  if (account) parts.push(account)
+  return parts.length > 0 ? parts.join(' ') : '—'
 }
 
 function display(value: string | null | undefined): string {
@@ -49,7 +58,7 @@ export function OilChangeDetailModal({ row, onClose }: OilChangeDetailModalProps
     { label: 'Polen Filtresi', value: display(row.polenFilter) },
     { label: 'Yapan Usta', value: display(row.employee) },
     { label: 'Telefon', value: display(row.phone) },
-    { label: 'Fiyat', value: formatPrice(row.price) },
+    { label: 'Fiyat', value: formatPriceDisplay(row) },
   ]
 
   const noteValue = display(row.note)

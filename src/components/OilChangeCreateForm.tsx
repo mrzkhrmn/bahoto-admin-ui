@@ -5,6 +5,7 @@ import type {
   OilChange,
   OilChangeCreateRequest,
   OilChangeUpdateRequest,
+  PaymentMethod,
 } from '../types/yaglamaServisi'
 import './OilChangeCreateForm.css'
 
@@ -34,10 +35,13 @@ const emptyForm = {
   note: '',
   employee: '',
   price: '',
+  paymentMethod: '' as '' | PaymentMethod,
+  bankAccount: '',
 }
 
 function toFormState(data?: OilChange | null) {
   if (!data) return emptyForm
+  const method = data.paymentMethod?.trim()
   return {
     vehicle: data.vehicle ?? '',
     plate: data.plate ?? '',
@@ -53,6 +57,16 @@ function toFormState(data?: OilChange | null) {
     note: data.note ?? '',
     employee: data.employee ?? '',
     price: data.price == null ? '' : String(data.price),
+    paymentMethod:
+      method === 'Nakit' ||
+      method === 'KK' ||
+      method === 'C Iban' ||
+      method === 'M Iban'
+        ? method
+        : method === 'Kredi Kartı'
+          ? 'KK'
+          : ('' as const),
+    bankAccount: data.bankAccount ?? '',
   }
 }
 
@@ -113,7 +127,10 @@ export function OilChangeCreateForm({
 
   if (!open) return null
 
-  const update = (key: keyof typeof emptyForm, value: string) => {
+  const update = <K extends keyof typeof emptyForm>(
+    key: K,
+    value: (typeof emptyForm)[K],
+  ) => {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
@@ -173,6 +190,8 @@ export function OilChangeCreateForm({
           note: form.note.trim(),
           employee: form.employee.trim(),
           price,
+          paymentMethod: form.paymentMethod,
+          bankAccount: form.bankAccount.trim(),
         })
       } else {
         if (!initialData?.id) {
@@ -195,6 +214,8 @@ export function OilChangeCreateForm({
           note: form.note.trim(),
           employee: form.employee.trim(),
           price,
+          paymentMethod: form.paymentMethod,
+          bankAccount: form.bankAccount.trim(),
         })
       }
 
@@ -341,6 +362,32 @@ export function OilChangeCreateForm({
                 value={form.price}
                 onChange={(e) => update('price', e.target.value)}
                 placeholder="Boş bırakılabilir"
+              />
+            </label>
+            <label>
+              <span>Ödeme Tipi</span>
+              <select
+                value={form.paymentMethod}
+                onChange={(e) =>
+                  update(
+                    'paymentMethod',
+                    e.target.value as '' | PaymentMethod,
+                  )
+                }
+              >
+                <option value="">Seçiniz</option>
+                <option value="Nakit">Nakit</option>
+                <option value="KK">KK</option>
+                <option value="C Iban">C Iban</option>
+                <option value="M Iban">M Iban</option>
+              </select>
+            </label>
+            <label>
+              <span>Banka Hesabı</span>
+              <input
+                value={form.bankAccount}
+                onChange={(e) => update('bankAccount', e.target.value)}
+                placeholder="Örn. İş Bankası"
               />
             </label>
             <label className="create-modal__full">

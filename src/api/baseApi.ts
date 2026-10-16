@@ -117,6 +117,7 @@ export const baseApi = createApi({
     'YaglamaServisi',
     'Cari',
     'Product',
+    'KarmaProduct',
     'WashPrice',
     'DryLubePrice',
     'VehicleMaintenance',

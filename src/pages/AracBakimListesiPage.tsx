@@ -24,6 +24,35 @@ function displayText(value: string | null | undefined): string {
   return value
 }
 
+function extractBrandKey(brandModel: string): string {
+  const normalized = brandModel.trim().replace(/\s+/g, ' ')
+  if (!normalized) return ''
+  const space = normalized.indexOf(' ')
+  const brand = space < 0 ? normalized : normalized.slice(0, space)
+  return brand.toLocaleLowerCase('tr')
+}
+
+/** Aynı markayı (ilk kelime) bir arada tutar; yeni kayıt marka grubunun altına gelir. */
+function sortByBrandGroups(items: VehicleMaintenance[]): VehicleMaintenance[] {
+  const brandFirst = new Map<string, number>()
+  for (const item of items) {
+    const brand = extractBrandKey(item.brandModel)
+    const current = brandFirst.get(brand)
+    if (current == null || item.sortOrder < current) {
+      brandFirst.set(brand, item.sortOrder)
+    }
+  }
+
+  return [...items].sort((a, b) => {
+    const brandA = extractBrandKey(a.brandModel)
+    const brandB = extractBrandKey(b.brandModel)
+    const groupCmp = (brandFirst.get(brandA) ?? 0) - (brandFirst.get(brandB) ?? 0)
+    if (groupCmp !== 0) return groupCmp
+    if (a.sortOrder !== b.sortOrder) return a.sortOrder - b.sortOrder
+    return a.brandModel.localeCompare(b.brandModel, 'tr')
+  })
+}
+
 export function AracBakimListesiPage() {
   const dispatch = useAppDispatch()
   const [formOpen, setFormOpen] = useState(false)
@@ -47,7 +76,10 @@ export function AracBakimListesiPage() {
     }
   }, [dispatch, isFetching, isCreating, isUpdating, isDeleting])
 
-  const items = data?.items ?? []
+  const items = useMemo(
+    () => sortByBrandGroups(data?.items ?? []),
+    [data?.items],
+  )
   const filteredItems = useMemo(() => {
     const q = search.trim().toLocaleLowerCase('tr')
     if (!q) return items

@@ -60,6 +60,7 @@ export function KuruYaglamaFiyatTablosuPage() {
   const [editing, setEditing] = useState<DryLubePrice | null>(null)
   const [zamOpen, setZamOpen] = useState(false)
   const [zamScope, setZamScope] = useState<ServicePriceIncreaseScope>('all')
+  const [zamBrandModelId, setZamBrandModelId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
 
   const { data, isFetching, isError, error } = useGetDryLubePriceListQuery()
@@ -122,8 +123,12 @@ export function KuruYaglamaFiyatTablosuPage() {
     setFormOpen(true)
   }
 
-  const openZam = (scope: ServicePriceIncreaseScope) => {
+  const openZam = (
+    scope: ServicePriceIncreaseScope,
+    brandModelId: string | null = null,
+  ) => {
     setZamScope(scope)
+    setZamBrandModelId(brandModelId)
     setZamOpen(true)
   }
 
@@ -150,6 +155,7 @@ export function KuruYaglamaFiyatTablosuPage() {
   const handleApplyZam = async (payload: {
     scope: ServicePriceIncreaseScope
     serviceKey?: string | null
+    brandModelId?: string | null
     percent: number
   }) => {
     const result = await applyIncrease(payload).unwrap()
@@ -159,6 +165,11 @@ export function KuruYaglamaFiyatTablosuPage() {
         : ''
     alert(`${result.updatedCount} fiyat alanı güncellendi.${skipped}`)
   }
+
+  const brandModelOptions = useMemo(
+    () => items.map((item) => ({ id: item.id, label: item.brandModel })),
+    [items],
+  )
 
   return (
     <div className="yaglama-page service-price-page">
@@ -216,6 +227,15 @@ export function KuruYaglamaFiyatTablosuPage() {
           </button>
           <button
             type="button"
+            className="btn btn--ghost btn--sm"
+            onClick={() => openZam('brandModel')}
+            disabled={items.length === 0}
+          >
+            <FiTrendingUp aria-hidden />
+            Marka-Model Zamı
+          </button>
+          <button
+            type="button"
             className="btn btn--primary btn--sm"
             onClick={openCreate}
           >
@@ -264,6 +284,15 @@ export function KuruYaglamaFiyatTablosuPage() {
                     ))}
                     <td className="service-price-table__actions" rowSpan={2}>
                       <div className="data-table__actions">
+                        <button
+                          type="button"
+                          className="btn btn--edit"
+                          aria-label="Zam"
+                          title="Bu Marka-Modele zam"
+                          onClick={() => openZam('brandModel', item.id)}
+                        >
+                          <FiTrendingUp aria-hidden />
+                        </button>
                         <button
                           type="button"
                           className="btn btn--edit"
@@ -317,7 +346,12 @@ export function KuruYaglamaFiyatTablosuPage() {
         open={zamOpen}
         scope={zamScope}
         services={[...DRY_LUBE_SERVICE_COLUMNS]}
-        onClose={() => setZamOpen(false)}
+        brandModels={brandModelOptions}
+        initialBrandModelId={zamBrandModelId}
+        onClose={() => {
+          setZamOpen(false)
+          setZamBrandModelId(null)
+        }}
         onSubmit={handleApplyZam}
         isSubmitting={isApplying}
       />

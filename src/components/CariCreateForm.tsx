@@ -110,10 +110,8 @@ export function CariCreateForm({
     e.preventDefault()
     setError(null)
 
-    if (!form.brand.trim()) {
-      setError('Marka zorunludur.')
-      return
-    }
+    const brand = form.brand.trim()
+    const name = form.name.trim()
 
     const quantity = parseQuantity(form.quantity)
     const incomingAmount = parseAmount(form.incomingAmount)
@@ -125,10 +123,6 @@ export function CariCreateForm({
       paidAmount !== 'empty'
 
     if (hasAnyCariField) {
-      if (quantity === 'invalid' || quantity === 'empty') {
-        setError('Miktar en az 1 olmalıdır.')
-        return
-      }
       if (incomingAmount === 'invalid' || incomingAmount === 'empty') {
         setError('Gelen fiyat geçerli bir değer olmalıdır.')
         return
@@ -137,16 +131,20 @@ export function CariCreateForm({
         setError('Ödenen fiyat geçerli bir değer olmalıdır.')
         return
       }
+      if (quantity === 'invalid') {
+        setError('Miktar en az 1 olmalıdır.')
+        return
+      }
     }
 
     const payload: CariCreateWithProductRequest = {
-      brand: form.brand.trim(),
-      name: form.name.trim() || undefined,
+      brand,
+      name: name || undefined,
       quantityUnit: form.quantityUnit,
     }
 
     if (hasAnyCariField) {
-      payload.quantity = quantity as number
+      payload.quantity = quantity === 'empty' ? 1 : quantity
       payload.incomingAmount = incomingAmount as number
       payload.paidAmount = paidAmount as number
     }
@@ -194,7 +192,8 @@ export function CariCreateForm({
           ) : null}
 
           <p className="create-modal__hint">
-            Yalnızca marka zorunludur. Diğer alanları sonra doldurabilirsiniz.
+            Marka ve ürün/model adını elle girin. Gelen / ödenen doldurulursa
+            bakiye hesaplanır. Bu kayıtlar fiyat tablosundan bağımsızdır.
           </p>
 
           <div className="create-modal__grid">
@@ -204,18 +203,18 @@ export function CariCreateForm({
                 type="text"
                 value={form.brand}
                 onChange={(e) => update('brand', e.target.value)}
-                required
                 disabled={isSubmitting}
+                placeholder="Marka"
               />
             </label>
             <label>
-              Ürün Adı
+              Ürün / Model
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => update('name', e.target.value)}
                 disabled={isSubmitting}
-                placeholder="İsteğe bağlı"
+                placeholder="Ürün veya model"
               />
             </label>
             <label>
@@ -239,9 +238,7 @@ export function CariCreateForm({
                 value={form.quantity}
                 onChange={(e) => update('quantity', e.target.value)}
                 disabled={isSubmitting}
-                placeholder={
-                  form.quantityUnit === 'Koli' ? 'Örn. 10' : 'Örn. 20'
-                }
+                placeholder="Boşsa 1"
               />
             </label>
             <label>

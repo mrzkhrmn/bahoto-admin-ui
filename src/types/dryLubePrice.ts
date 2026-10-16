@@ -44,6 +44,7 @@ export interface DryLubePriceDeleteRequest {
 export interface DryLubePriceApplyIncreaseRequest {
   scope: ServicePriceIncreaseScope
   serviceKey?: string | null
+  brandModelId?: string | null
   percent: number
 }
 

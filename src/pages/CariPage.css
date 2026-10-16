@@ -1,117 +1,210 @@
-.cari-page .data-table__row-btn {
-  display: contents;
+.cari-page .cari-col-toggle {
+  width: 2.5rem;
+}
+
+.cari-page .cari-col-num {
+  width: 5.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.cari-page .cari-col-actions {
+  width: 3.25rem;
+  text-align: right;
+}
+
+.cari-page .cari-col-actions .data-table__actions {
+  justify-content: flex-end;
+}
+
+.cari-page .cari-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 0.4rem;
+  background: #fff;
+  border: 1px solid #b9d0d0;
+  color: #0a4f4f;
+  font-size: 1rem;
+}
+
+.cari-page .cari-toggle--sm {
+  width: 1.45rem;
+  height: 1.45rem;
+  font-size: 0.9rem;
+  border-color: #c2ced8;
+  color: #1e3a5f;
+}
+
+/* —— Marka tablosu —— */
+.cari-page .cari-brand-table {
+  width: 100%;
+}
+
+.cari-page .cari-brand-row {
   cursor: pointer;
 }
 
-.cari-page .data-table__expand-row td {
-  padding: 0;
-  background: #f4f8f8;
+.cari-page .cari-brand-row td {
+  background: #eef6f6;
+  font-weight: 700;
+}
+
+.cari-page .cari-brand-row:hover td {
+  background: #e4f1f1;
+}
+
+.cari-page .cari-brand-row.is-open td {
+  background: #d7ecec;
+}
+
+.cari-page .cari-brand-row__name {
+  color: #0a4f4f;
+  font-size: 1.05rem;
+}
+
+/* —— Ortak iç panel —— */
+.cari-page .cari-nest-row > td {
+  padding: 0 !important;
+  background: #f3f6f8 !important;
   border-bottom: 2px solid #9cb8b8;
 }
 
-.cari-page .cari-expand {
-  padding: 1rem 1.1rem 1.15rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
+.cari-page .cari-nest {
+  padding: 0.85rem 1rem 1rem 2rem;
 }
 
-.cari-page .cari-expand__table-wrap {
+.cari-page .cari-nest--inner {
+  padding: 0.7rem 0.75rem 0.85rem 1.5rem;
+}
+
+.cari-page .cari-nest__panel {
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(15, 28, 36, 0.06);
+}
+
+.cari-page .cari-nest__panel--product {
+  border: 2px solid #7eaeae;
+}
+
+.cari-page .cari-nest__panel--entry {
+  border: 2px solid #8aa4bc;
+}
+
+.cari-page .cari-nest__label {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cari-page .cari-nest__panel--product > .cari-nest__label {
+  background: #0d6e6e;
+  color: #fff;
+}
+
+.cari-page .cari-nest__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0.65rem 0.4rem 0;
+  background: #1e3a5f;
+}
+
+.cari-page .cari-nest__bar .cari-nest__label {
+  background: transparent;
+  color: #fff;
+  padding-left: 0.85rem;
+}
+
+.cari-page .cari-nest__bar .btn {
+  margin-right: 0.55rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.cari-page .cari-nest__scroll {
   overflow-x: auto;
-  border: 2px solid #c5d0d8;
-  border-radius: 0.55rem;
+}
+
+.cari-page .cari-nest__empty {
+  padding: 0.9rem;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
   background: #fff;
 }
 
-.cari-page .cari-expand table {
+/* —— Ürün tablosu —— */
+.cari-page .cari-product-table,
+.cari-page .cari-entry-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 1.02rem;
+  font-size: 0.95rem;
 }
 
-.cari-page .cari-expand th,
-.cari-page .cari-expand td {
-  padding: 0.75rem 0.9rem;
+.cari-page .cari-product-table th,
+.cari-page .cari-product-table td,
+.cari-page .cari-entry-table th,
+.cari-page .cari-entry-table td {
+  padding: 0.65rem 0.8rem;
   text-align: left;
   white-space: nowrap;
-  border-bottom: 2px solid #8aa0ae;
-  border-right: 2px solid #8aa0ae;
+  border-bottom: 1px solid #d7e0e6;
 }
 
-.cari-page .cari-expand th:last-child,
-.cari-page .cari-expand td:last-child {
-  border-right: none;
-}
-
-.cari-page .cari-expand th {
+.cari-page .cari-product-table th {
   background: #e8f2f2;
   font-weight: 700;
-  font-size: 0.88rem;
-  color: #0a4f4f;
-  border-bottom: 2px solid #8aa0ae;
-}
-
-.cari-page .data-table tbody tr:last-child > td {
-  border-bottom: 2px solid #8aa0ae;
-}
-
-.cari-page .cari-expand tbody tr:hover {
-  background: var(--row-hover);
-}
-
-.cari-page .cari-expand tbody td {
-  font-weight: 700;
-}
-
-.cari-page .cari-expand__add {
-  display: grid;
-  grid-template-columns: minmax(7rem, 0.8fr) minmax(6rem, 0.7fr) repeat(3, minmax(0, 1fr)) auto;
-  gap: 0.65rem;
-  align-items: end;
-  padding: 0.9rem;
-}
-
-.cari-page .cari-expand__add label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-size: 0.8rem;
   color: #0a4f4f;
 }
 
-.cari-page .cari-expand__add input,
-.cari-page .cari-expand__add select {
-  padding: 0.55rem 0.7rem;
-  border: 2px solid var(--border);
-  border-radius: 0.4rem;
-  font: inherit;
-  font-weight: 600;
-  color: var(--text);
-  background: #fff;
-}
-
-.cari-page .cari-expand__add input[readonly] {
-  background: #f3f6f8;
-  color: var(--muted);
-}
-
-.cari-page .cari-expand__add-error {
-  grid-column: 1 / -1;
-  padding: 0.55rem 0.7rem;
-  border-radius: 0.4rem;
-  background: var(--danger-soft);
-  color: var(--danger);
-  font-size: 0.88rem;
-  font-weight: 600;
-}
-
-.cari-page .data-table__cell--brand {
-  color: #0f5c5c;
-}
-
-.cari-page .data-table__cell--name {
+.cari-page .cari-entry-table th {
+  background: #e8eef5;
+  font-weight: 700;
+  font-size: 0.8rem;
   color: #1e3a5f;
+}
+
+.cari-page .cari-product-table tbody tr:last-child > td,
+.cari-page .cari-entry-table tbody tr:last-child > td {
+  border-bottom: none;
+}
+
+.cari-page .cari-product-row {
+  cursor: pointer;
+}
+
+.cari-page .cari-product-row td {
+  background: #f4f8fb;
+  font-weight: 700;
+}
+
+.cari-page .cari-product-row:hover td {
+  background: #eaf1f7;
+}
+
+.cari-page .cari-product-row.is-open td {
+  background: #dde8f2;
+}
+
+.cari-page .cari-product-row__name {
+  color: #1e3a5f;
+}
+
+.cari-page .cari-entry-table tbody td {
+  font-weight: 700;
+}
+
+.cari-page .cari-entry-table tbody tr:hover {
+  background: var(--row-hover);
 }
 
 .cari-page .data-table__cell--qty {
@@ -145,33 +238,16 @@
   color: #475569;
 }
 
-.cari-page .data-table__cell--count {
-  color: #7c2d12;
-  font-variant-numeric: tabular-nums;
-}
-
 .cari-page .data-table__cell--date {
   color: #c0392b;
 }
 
-.cari-page .data-table__chevron {
-  color: #0a4f4f;
-  font-size: 1.1rem;
-  vertical-align: middle;
-}
-
-.cari-page tr.is-open {
-  background: #eef6f6;
-}
-
-@media (max-width: 900px) {
-  .cari-page .cari-expand__add {
-    grid-template-columns: 1fr 1fr;
+@media (max-width: 720px) {
+  .cari-page .cari-nest {
+    padding-left: 0.75rem;
   }
-}
 
-@media (max-width: 560px) {
-  .cari-page .cari-expand__add {
-    grid-template-columns: 1fr;
+  .cari-page .cari-nest--inner {
+    padding-left: 0.5rem;
   }
 }

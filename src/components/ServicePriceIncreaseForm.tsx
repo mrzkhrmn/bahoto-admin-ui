@@ -10,14 +10,22 @@ export interface ServiceColumnOption {
   label: string
 }
 
+export interface BrandModelOption {
+  id: string
+  label: string
+}
+
 interface ServicePriceIncreaseFormProps {
   open: boolean
   scope: ServicePriceIncreaseScope
   services: ServiceColumnOption[]
+  brandModels?: BrandModelOption[]
+  initialBrandModelId?: string | null
   onClose: () => void
   onSubmit: (payload: {
     scope: ServicePriceIncreaseScope
     serviceKey?: string | null
+    brandModelId?: string | null
     percent: number
   }) => Promise<void>
   isSubmitting: boolean
@@ -32,15 +40,24 @@ function parsePercent(raw: string): number | 'invalid' {
   return value
 }
 
+function scopeTitle(scope: ServicePriceIncreaseScope): string {
+  if (scope === 'service') return 'Sütun Zamı'
+  if (scope === 'brandModel') return 'Marka-Model Zamı'
+  return 'Toplu Zam'
+}
+
 export function ServicePriceIncreaseForm({
   open,
   scope,
   services,
+  brandModels = [],
+  initialBrandModelId = null,
   onClose,
   onSubmit,
   isSubmitting,
 }: ServicePriceIncreaseFormProps) {
   const [serviceKey, setServiceKey] = useState(services[0]?.key ?? '')
+  const [brandModelId, setBrandModelId] = useState('')
   const [percent, setPercent] = useState('')
   const [error, setError] = useState<string | null>(null)
 
@@ -49,7 +66,13 @@ export function ServicePriceIncreaseForm({
     setError(null)
     setPercent('')
     setServiceKey(services[0]?.key ?? '')
-  }, [open, scope, services])
+    setBrandModelId(
+      initialBrandModelId &&
+        brandModels.some((b) => b.id === initialBrandModelId)
+        ? initialBrandModelId
+        : (brandModels[0]?.id ?? ''),
+    )
+  }, [open, scope, services, brandModels, initialBrandModelId])
 
   if (!open) return null
 
@@ -73,10 +96,21 @@ export function ServicePriceIncreaseForm({
       return
     }
 
+    if (scope === 'brandModel' && !brandModelId) {
+      setError('Marka-Model seçilmelidir.')
+      return
+    }
+
     const serviceLabel =
       services.find((s) => s.key === serviceKey)?.label ?? serviceKey
+    const brandLabel =
+      brandModels.find((b) => b.id === brandModelId)?.label ?? brandModelId
     const label =
-      scope === 'all' ? 'tüm tabloya' : `"${serviceLabel}" sütununa`
+      scope === 'all'
+        ? 'tüm tabloya'
+        : scope === 'service'
+          ? `"${serviceLabel}" sütununa`
+          : `"${brandLabel}" marka-modeline`
 
     const ok = window.confirm(
       `%${String(value).replace('.', ',')} zam ${label} uygulanacak. Devam edilsin mi?`,
@@ -87,6 +121,7 @@ export function ServicePriceIncreaseForm({
       await onSubmit({
         scope,
         serviceKey: scope === 'service' ? serviceKey : null,
+        brandModelId: scope === 'brandModel' ? brandModelId : null,
         percent: value,
       })
       onClose()
@@ -107,7 +142,7 @@ export function ServicePriceIncreaseForm({
         <header className="create-modal__header">
           <h2>
             <FiTrendingUp aria-hidden />
-            {scope === 'all' ? 'Toplu Zam' : 'Sütun Zamı'}
+            {scopeTitle(scope)}
           </h2>
           <button
             type="button"
@@ -134,7 +169,9 @@ export function ServicePriceIncreaseForm({
             Mevcut fiyatlara yüzde zam uygulanır. Boş fiyatlar atlanır.
             {scope === 'service'
               ? ' Seçilen sütunun Kart ve Nakit değerleri güncellenir.'
-              : ' Tablodaki tüm dolu fiyatlar güncellenir.'}
+              : scope === 'brandModel'
+                ? ' Seçilen Marka-Model satırındaki tüm dolu fiyatlar güncellenir.'
+                : ' Tablodaki tüm dolu fiyatlar güncellenir.'}
           </p>
 
           <div className="create-modal__grid create-modal__grid--single">
@@ -150,6 +187,22 @@ export function ServicePriceIncreaseForm({
                   {services.map((s) => (
                     <option key={s.key} value={s.key}>
                       {s.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : scope === 'brandModel' ? (
+              <label>
+                Marka-Model
+                <select
+                  value={brandModelId}
+                  onChange={(e) => setBrandModelId(e.target.value)}
+                  disabled={isSubmitting || Boolean(initialBrandModelId)}
+                  required
+                >
+                  {brandModels.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.label}
                     </option>
                   ))}
                 </select>

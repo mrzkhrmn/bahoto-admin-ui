@@ -2,7 +2,7 @@ export type QuantityUnit = 'Adet' | 'Koli'
 
 export interface Cari {
   id: string
-  productId: string
+  cariItemId: string
   productBrand: string
   productName: string
   quantity: number
@@ -15,7 +15,7 @@ export interface Cari {
 }
 
 export interface CariProductGroup {
-  productId: string
+  cariItemId: string
   brand: string
   name: string
   quantityLabel: string
@@ -40,7 +40,7 @@ export interface CariListData {
 }
 
 export interface CariCreateRequest {
-  productId: string
+  cariItemId: string
   quantity: number
   quantityUnit: QuantityUnit
   incomingAmount: number
@@ -48,7 +48,7 @@ export interface CariCreateRequest {
 }
 
 export interface CariCreateWithProductRequest {
-  brand: string
+  brand?: string
   name?: string
   quantity?: number
   quantityUnit?: QuantityUnit
@@ -58,7 +58,7 @@ export interface CariCreateWithProductRequest {
 
 export interface CariUpdateRequest {
   id: string
-  productId: string
+  cariItemId: string
   quantity: number
   quantityUnit: QuantityUnit
   incomingAmount: number
@@ -67,6 +67,14 @@ export interface CariUpdateRequest {
 
 export interface CariDeleteRequest {
   id: string
+}
+
+export interface CariDeleteItemRequest {
+  cariItemId: string
+}
+
+export interface CariDeleteBrandRequest {
+  brand: string
 }
 
 export interface ApiResponse<T> {

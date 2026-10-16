@@ -4,6 +4,7 @@ import { AdminLayout } from './layout/AdminLayout'
 import { AracBakimListesiPage } from './pages/AracBakimListesiPage'
 import { CariPage } from './pages/CariPage'
 import { FiyatTablosuPage } from './pages/FiyatTablosuPage'
+import { KarmaUrunlerPage } from './pages/KarmaUrunlerPage'
 import { KuruYaglamaFiyatTablosuPage } from './pages/KuruYaglamaFiyatTablosuPage'
 import { LoginPage } from './pages/LoginPage'
 import { YaglamaServisiPage } from './pages/YaglamaServisiPage'
@@ -21,6 +22,7 @@ function App() {
             <Route path="yaglama-servisi" element={<YaglamaServisiPage />} />
             <Route path="cari" element={<CariPage />} />
             <Route path="fiyat-tablosu" element={<FiyatTablosuPage />} />
+            <Route path="karma-urunler" element={<KarmaUrunlerPage />} />
             <Route
               path="yikama-fiyat-tablosu"
               element={<YikamaFiyatTablosuPage />}

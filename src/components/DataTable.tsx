@@ -70,9 +70,9 @@ const columns: Column[] = [
   },
   {
     key: 'price',
-    label: 'Fiyat/Tl',
+    label: 'Fiyat',
     cellClass: 'data-table__cell--price',
-    render: (row) => formatPrice(row.price),
+    render: (row) => formatPriceDisplay(row),
   },
 ]
 
@@ -87,6 +87,8 @@ const searchFields: (keyof OilChange)[] = [
   'polenFilter',
   'note',
   'employee',
+  'paymentMethod',
+  'bankAccount',
 ]
 
 function toLocalDateKey(value: string): string {
@@ -112,12 +114,23 @@ function formatNumber(value: number): string {
   return value.toLocaleString('tr-TR')
 }
 
-function formatPrice(value: number | null): string {
-  if (value == null) return '—'
+function formatPriceAmount(value: number): string {
   return value.toLocaleString('tr-TR', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })
+}
+
+function formatPriceDisplay(row: OilChange): string {
+  const parts: string[] = []
+  if (row.price != null) {
+    parts.push(`${formatPriceAmount(row.price)} TL`)
+  }
+  const method = row.paymentMethod?.trim()
+  if (method) parts.push(method)
+  const account = row.bankAccount?.trim()
+  if (account) parts.push(account)
+  return parts.length > 0 ? parts.join(' ') : '—'
 }
 
 function formatCell(value: OilChange[SortKey]): string {
@@ -367,7 +380,7 @@ export function DataTable({
           <p>
             <strong>{rangeLabel}</strong> tarih aralığında{' '}
             <strong>{rangeStats.count}</strong> araç gelmiş, toplam{' '}
-            <strong>{formatPrice(rangeStats.totalPrice)} TL</strong> toplanmış.
+            <strong>{formatPriceAmount(rangeStats.totalPrice)} TL</strong> toplanmış.
           </p>
         </div>
       ) : null}

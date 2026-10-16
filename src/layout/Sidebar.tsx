@@ -6,6 +6,7 @@ import {
   FiDroplet,
   FiLogOut,
   FiFileText,
+  FiGrid,
   FiSettings,
   FiTag,
   FiTruck,
@@ -116,6 +117,16 @@ export function Sidebar() {
         >
           <FiTag aria-hidden />
           <span className="sidebar__link-label">Fiyat Tablosu</span>
+        </NavLink>
+        <NavLink
+          to="/karma-urunler"
+          className={({ isActive }) =>
+            `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
+          }
+          title="Karma Ürünler"
+        >
+          <FiGrid aria-hidden />
+          <span className="sidebar__link-label">Karma Ürünler</span>
         </NavLink>
         <NavLink
           to="/yikama-fiyat-tablosu"

@@ -4,6 +4,8 @@ import type {
   Cari,
   CariCreateRequest,
   CariCreateWithProductRequest,
+  CariDeleteBrandRequest,
+  CariDeleteItemRequest,
   CariDeleteRequest,
   CariListData,
   CariListRequest,
@@ -42,7 +44,7 @@ export const cariApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: ApiResponse<CariProductGroup>) =>
         response.data,
-      invalidatesTags: ['Cari', 'Product'],
+      invalidatesTags: ['Cari'],
     }),
     updateCari: builder.mutation<Cari, CariUpdateRequest>({
       query: (body) => ({
@@ -61,6 +63,22 @@ export const cariApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Cari'],
     }),
+    deleteCariItem: builder.mutation<void, CariDeleteItemRequest>({
+      query: (body) => ({
+        url: 'api/cari/delete-item',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Cari'],
+    }),
+    deleteCariBrand: builder.mutation<void, CariDeleteBrandRequest>({
+      query: (body) => ({
+        url: 'api/cari/delete-brand',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Cari'],
+    }),
   }),
 })
 
@@ -70,4 +88,6 @@ export const {
   useCreateCariWithProductMutation,
   useUpdateCariMutation,
   useDeleteCariMutation,
+  useDeleteCariItemMutation,
+  useDeleteCariBrandMutation,
 } = cariApi

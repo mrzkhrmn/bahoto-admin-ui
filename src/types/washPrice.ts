@@ -56,11 +56,12 @@ export interface WashPriceDeleteRequest {
   id: string
 }
 
-export type ServicePriceIncreaseScope = 'all' | 'service'
+export type ServicePriceIncreaseScope = 'all' | 'service' | 'brandModel'
 
 export interface WashPriceApplyIncreaseRequest {
   scope: ServicePriceIncreaseScope
   serviceKey?: string | null
+  brandModelId?: string | null
   percent: number
 }
 

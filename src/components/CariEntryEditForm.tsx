@@ -116,7 +116,7 @@ export function CariEntryEditForm({
     try {
       await onUpdate({
         id: entry.id,
-        productId: entry.productId,
+        cariItemId: entry.cariItemId,
         quantity: parsedQuantity,
         quantityUnit,
         incomingAmount: incoming,

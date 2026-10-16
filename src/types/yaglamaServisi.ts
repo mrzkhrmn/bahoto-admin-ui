@@ -1,3 +1,5 @@
+export type PaymentMethod = 'Nakit' | 'KK' | 'C Iban' | 'M Iban'
+
 export interface OilChange {
   id: string
   vehicle: string
@@ -13,6 +15,8 @@ export interface OilChange {
   note: string
   employee: string
   price: number | null
+  paymentMethod: PaymentMethod | string | null
+  bankAccount: string | null
   createdAt: string
   updatedAt: string | null
 }
@@ -43,6 +47,8 @@ export interface OilChangeCreateRequest {
   note: string
   employee: string
   price: number | null
+  paymentMethod: PaymentMethod | ''
+  bankAccount: string
 }
 
 export interface OilChangeUpdateRequest {
@@ -60,6 +66,8 @@ export interface OilChangeUpdateRequest {
   note: string
   employee: string
   price: number | null
+  paymentMethod: PaymentMethod | ''
+  bankAccount: string
 }
 
 export interface OilChangeDeleteRequest {
