@@ -312,7 +312,7 @@ export function FiyatTablosuPage() {
     <div className="yaglama-page fiyat-page">
       <header className="yaglama-page__header">
         <div>
-          <h1>Fiyat Tablosu</h1>
+          <h1>Ürün Geliş Fiyatları</h1>
           <p>
             Markaları sürükleyerek yan yana sıralayın; ürün ve fiyatlar dikey
             listelenir.

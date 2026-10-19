@@ -103,20 +103,20 @@ export function Sidebar() {
           className={({ isActive }) =>
             `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
           }
-          title="Cari"
+          title="Ürün Satış Fiyatları"
         >
           <FiFileText aria-hidden />
-          <span className="sidebar__link-label">Cari</span>
+          <span className="sidebar__link-label">Ürün Satış Fiyatları</span>
         </NavLink>
         <NavLink
           to="/fiyat-tablosu"
           className={({ isActive }) =>
             `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
           }
-          title="Fiyat Tablosu"
+          title="Ürün Geliş Fiyatları"
         >
           <FiTag aria-hidden />
-          <span className="sidebar__link-label">Fiyat Tablosu</span>
+          <span className="sidebar__link-label">Ürün Geliş Fiyatları</span>
         </NavLink>
         <NavLink
           to="/karma-urunler"
