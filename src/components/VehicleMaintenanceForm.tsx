@@ -32,6 +32,7 @@ export function VehicleMaintenanceForm({
   const [engineOil, setEngineOil] = useState('')
   const [airFilter, setAirFilter] = useState('')
   const [oilFilter, setOilFilter] = useState('')
+  const [fuelFilter, setFuelFilter] = useState('')
   const [polenFilter, setPolenFilter] = useState('')
   const [error, setError] = useState<string | null>(null)
 
@@ -43,12 +44,14 @@ export function VehicleMaintenanceForm({
       setEngineOil(item.engineOil ?? '')
       setAirFilter(item.airFilter ?? '')
       setOilFilter(item.oilFilter ?? '')
+      setFuelFilter(item.fuelFilter ?? '')
       setPolenFilter(item.polenFilter ?? '')
     } else {
       setBrandModel('')
       setEngineOil('')
       setAirFilter('')
       setOilFilter('')
+      setFuelFilter('')
       setPolenFilter('')
     }
   }, [open, mode, item])
@@ -74,6 +77,7 @@ export function VehicleMaintenanceForm({
       engineOil: engineOil.trim() || null,
       airFilter: airFilter.trim() || null,
       oilFilter: oilFilter.trim() || null,
+      fuelFilter: fuelFilter.trim() || null,
       polenFilter: polenFilter.trim() || null,
     }
 
@@ -166,6 +170,15 @@ export function VehicleMaintenanceForm({
                 type="text"
                 value={oilFilter}
                 onChange={(e) => setOilFilter(e.target.value)}
+                disabled={isSubmitting}
+              />
+            </label>
+            <label>
+              Yakıt Filtresi
+              <input
+                type="text"
+                value={fuelFilter}
+                onChange={(e) => setFuelFilter(e.target.value)}
                 disabled={isSubmitting}
               />
             </label>

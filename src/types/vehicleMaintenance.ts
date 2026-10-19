@@ -5,6 +5,7 @@ export interface VehicleMaintenance {
   engineOil: string | null
   airFilter: string | null
   oilFilter: string | null
+  fuelFilter: string | null
   polenFilter: string | null
   createdAt: string
   updatedAt: string | null
@@ -19,6 +20,7 @@ export interface VehicleMaintenanceUpsertRequest {
   engineOil?: string | null
   airFilter?: string | null
   oilFilter?: string | null
+  fuelFilter?: string | null
   polenFilter?: string | null
 }
 

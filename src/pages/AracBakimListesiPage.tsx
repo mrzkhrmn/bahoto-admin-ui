@@ -89,6 +89,7 @@ export function AracBakimListesiPage() {
         item.engineOil,
         item.airFilter,
         item.oilFilter,
+        item.fuelFilter,
         item.polenFilter,
       ]
       return fields.some((field) =>
@@ -203,6 +204,7 @@ export function AracBakimListesiPage() {
                 <th>Motor Yağı</th>
                 <th>Hava Filtresi</th>
                 <th>Yağ Filtresi</th>
+                <th>Yakıt Filtresi</th>
                 <th>Polen Filtresi</th>
                 <th>İşlem</th>
               </tr>
@@ -221,6 +223,9 @@ export function AracBakimListesiPage() {
                   </td>
                   <td className="service-price-table__text">
                     {displayText(item.oilFilter)}
+                  </td>
+                  <td className="service-price-table__text">
+                    {displayText(item.fuelFilter)}
                   </td>
                   <td className="service-price-table__text">
                     {displayText(item.polenFilter)}
