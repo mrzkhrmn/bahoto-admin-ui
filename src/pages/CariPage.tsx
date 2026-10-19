@@ -311,7 +311,7 @@ export function CariPage() {
     <div className="yaglama-page cari-page">
       <header className="yaglama-page__header">
         <div>
-          <h1>Cari</h1>
+          <h1>Ürün Satış Fiyatları</h1>
         </div>
         <button
           type="button"
